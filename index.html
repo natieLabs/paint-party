@@ -5,42 +5,196 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
- <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Lazy Line Painter</title>
-        <meta name="description" content="A Jquery plugin for SVG path animation">
+<!-- <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Lazy Line Painter</title>
+  <meta name="description" content="A Jquery plugin for SVG path animation">
 
-        <!-- css  -->
-        <!-- <link rel="stylesheet" type="text/css" href="css/common.css" media="all"> -->
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 
-        <!-- Include jQuery -->
-        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  
+  
 
-        <!-- Include lazylinepainter -->
-        <script src="jquery.lazylinepainter-1.7.0.js"></script>
-
-        <!-- Include lazylinepainter svgData object -->
-        <script src="script.js"></script>
-
-    </head>
+</head> -->
 
 <style>
-
-#undefined {
-    /*position: fixed;*/
+  canvas { display: block; vertical-align: middle; position:absolute; left:0; right:0; top:0; bottom:0; margin:auto; }  
+  body {background: #f2f2f2;
+      -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;}
+  #undefined {
     padding: 40px;
     top:50%;
     left:50%;
-    /*margin: -300px 0 0 -400px;*/
-}
+  }
+  .content{
+    vertical-align: middle; position:absolute; left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+  }
+  #carve{
+     display: hidden; vertical-align: middle; position:absolute; left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+    pointer-events: none;
+
+  }
+
+  .pattern{
+    background: url("pattern.jpg") center/cover no-repeat transparent;
+    /*position: relative;*/
+    z-index: 20;
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-image-repeat: stretch;
+    opacity: 0.15 
+  }
 </style>
 
-    <body>
-        <div class="content">
-            <div class="logo-wrap">
-                <div id='undefined'></div>
-            </div>
+<!-- <body> -->
+    
+<!-- </body> -->
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <title>paint natie</title>
+  <script src="jquery.lazylinepainter-1.7.0.js"></script>
+  
+
+  <!-- <link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/> -->
+  <!-- <link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/> -->
+  <script src="examples.js"></script>
+
+  <script src="easeljs-NEXT.combined.js"></script>
+  <!-- We also provide hosted minified versions of all CreateJS libraries.
+    http://code.createjs.com -->
+
+<script id="editable">
+  var canvas, stage;
+  var drawingCanvas;
+  var oldPt;
+  var oldMidPt;
+  var title;
+  var color;
+  var stroke;
+  var index;
+
+  function init() {
+    canvas = document.getElementById("myCanvas");
+    index = 0;
+    colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#000000"];
+
+    //check to see if we are running in a browser with touch support
+    stage = new createjs.Stage(canvas);
+    stage.autoClear = false;
+    stage.enableDOMEvents(true);
+
+    createjs.Touch.enable(stage);
+    createjs.Ticker.setFPS(24);
+
+    drawingCanvas = new createjs.Shape();
+
+    stage.addEventListener("stagemousedown", handleMouseDown);
+    stage.addEventListener("stagemouseup", handleMouseUp);
+
+    title = new createjs.Text("Click and Drag to draw", "36px Arial", "#777777");
+    title.x = 300;
+    title.y = 200;
+    stage.addChild(title);
+
+    stage.addChild(drawingCanvas);
+    stage.update();
+
+    make_carve();
+    function make_carve(){
+      var d = $.Deferred();
+
+      base_image = new Image();
+      base_image.src = 'carve.png';
+      base_image.setAttribute("id", "carve");
+      $(document.body).append(base_image);
+      $('#carve').attr({
+        "width" :  1.1 * parseInt($('#myCanvas').css("width")) + "px",
+        "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
+      });
+
+      setTimeout(function () {
+        d.resolve();
+      }, 500);
+      
+      return d;
+    }
+  }
+
+  function handleMouseDown(event) {
+    if (!event.primary) { return; }
+    if (stage.contains(title)) {
+      stage.clear();
+      stage.removeChild(title);
+    }
+    color = colors[(index++) % colors.length];
+    stroke = Math.random() * 30 + 10 | 0;
+    oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
+    oldMidPt = oldPt.clone();
+    stage.addEventListener("stagemousemove", handleMouseMove);
+  }
+
+  function handleMouseMove(event) {
+    if (!event.primary) { return; }
+    var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1, oldPt.y + stage.mouseY >> 1);
+
+    drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+
+    oldPt.x = stage.mouseX;
+    oldPt.y = stage.mouseY;
+
+    oldMidPt.x = midPt.x;
+    oldMidPt.y = midPt.y;
+
+    stage.update();
+  }
+
+  function handleMouseUp(event) {
+    if (!event.primary) { return; }
+    stage.removeEventListener("stagemousemove", handleMouseMove);
+  }
+
+  function sizeCanvas(){
+    width = window.innerWidth || e.clientWidth || g.clientWidth;;
+    height = window.innerHeight || e.clientHeight|| g.clientHeight;;
+    $("myCanvas").attr("width", width).attr("height", height);
+    // $("undefined").attr("width", width).attr("height", height);
+
+  }
+
+  sizeCanvas();
+
+  $( window ).resize(function() {
+    sizeCanvas();
+  });
+
+</script>
+
+<!-- <script src="script.js"></script> -->
+</head>
+
+<body onload="init();">
+
+<div class="content">
+        <div class="logo-wrap">
+            <div id='undefined'></div>
         </div>
-    </body>
+    </div>
+
+<!-- <div class="pattern"></div> -->
+<canvas id="myCanvas" width="1200" height="1200"></canvas>
+</body>
 </html>

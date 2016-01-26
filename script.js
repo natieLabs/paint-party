@@ -33,13 +33,22 @@ var pathObj = {
  */ 
  
  $(document).ready(function(){ 
- $('#undefined').lazylinepainter( 
- {
-    "svgData": pathObj,
-    "strokeWidth": 2,
-    "strokeColor": "#e09b99"
-}).lazylinepainter('paint'); 
+   $('#undefined').lazylinepainter( 
+   {
+      "svgData": pathObj,
+      "strokeWidth": 2,
+      "strokeColor": "#e09b99"
+  }).lazylinepainter('paint'); 
  });
+
+ $("#carve").onload=function(){
+  console.log("onload")
+  var w = $('#carve').clientWidth;
+  var h = $('#carve').clientHeight;
+  console.log(w,h);
+  $('#undefined').width(w);
+  $('#undefined').css("height", h);
+ }
 
  /* 
  Setup and Paint your lazyline! 

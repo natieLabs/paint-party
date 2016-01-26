@@ -25,7 +25,8 @@
     -o-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
-    user-select: none;}
+    user-select: none;
+    overflow: hidden;}
   #undefined {
     padding: 40px;
     top:50%;
@@ -89,6 +90,15 @@
 
   function init() {
     canvas = document.getElementById("myCanvas");
+    width = window.innerWidth || e.clientWidth || g.clientWidth;;
+    height = window.innerHeight || e.clientHeight|| g.clientHeight;
+    console.log(width);
+    // $("#myCanvas")[0].attr("width", width).attr("height", height);
+    var ctx = $("#myCanvas")[0].getContext('2d');
+    ctx.canvas.height = height;
+    ctx.canvas.width = width;
+
+
     index = 0;
     colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#000000"];
 
@@ -118,8 +128,8 @@
       base_image.setAttribute("id", "carve");
       $(document.body).append(base_image);
       $('#carve').attr({
-        "width" :  1.1 * parseInt($('#myCanvas').css("width")) + "px",
-        "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
+        "width" :  parseInt($('#myCanvas').css("width")) + "px",
+        // "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
       });
 
       setTimeout(function () {
@@ -163,19 +173,23 @@
     stage.removeEventListener("stagemousemove", handleMouseMove);
   }
 
-  function sizeCanvas(){
-    width = window.innerWidth || e.clientWidth || g.clientWidth;;
-    height = window.innerHeight || e.clientHeight|| g.clientHeight;;
-    $("myCanvas").attr("width", width).attr("height", height);
-    // $("undefined").attr("width", width).attr("height", height);
+  // function sizeCanvas(){
+  //   width = window.innerWidth || e.clientWidth || g.clientWidth;;
+  //   height = window.innerHeight || e.clientHeight|| g.clientHeight;
+  //   console.log(width);c
+  //   // $("#myCanvas")[0].attr("width", width).attr("height", height);
+  //   var ctx = $("#myCanvas")[0];
+  //   ctx.canvas.height = 600;
+  //   ctx.canvas.width = 600;
+  //   // $("undefined").attr("width", width).attr("height", height);
 
-  }
+  // }
 
-  sizeCanvas();
+  // sizeCanvas();
 
-  $( window ).resize(function() {
-    sizeCanvas();
-  });
+  // $( window ).resize(function() {
+  //   sizeCanvas();
+  // });
 
 </script>
 
@@ -191,6 +205,6 @@
     </div>
 
 <!-- <div class="pattern"></div> -->
-<canvas id="myCanvas" width="1200" height="1200"></canvas>
+<canvas id="myCanvas" ></canvas>
 </body>
 </html>

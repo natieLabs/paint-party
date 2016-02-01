@@ -108,6 +108,8 @@
     index = 0;
     colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#000000"];
 
+    color=colors[0];
+
     //check to see if we are running in a browser with touch support
     stage = new createjs.Stage(canvas);
     stage.autoClear = false;
@@ -139,20 +141,24 @@
                          .append("circle");
 
       var circleAttributes = circles
-                      .attr("cx", function (d) { return d.i%2 * 35+ 20 })
-                      .attr("cy", function (d) { return ~~(d.i/2) * 35 + 20 })
-                      .attr("r", function (d) { return 15 })
+                      .attr("cx", function (d) { return d.i%2 * 45+ 40 })
+                      .attr("cy", function (d) { return ~~(d.i/2) * 45 + 40 })
+                      .attr("r", function (d) { return 18 })
                       .style("fill", function(d) { return d.color; })
-                      .style("stroke", "black")
-                      .style("stroke-width", 3);
+                      .filter(function(d){return d.i==0})
+                      .style("stroke", "#0d0d0d").style("stroke-width",4)
+                      // .style("stroke", "black")
+                      // .style("stroke-width", 3);
 
       circles.on('click', function(d) {
         color = d.color;
+        circles.transition().attr("r", 18).style("stroke", "none");
+        d3.select(this).transition().attr("r", 23).transition().attr("r", 18).style("stroke", "#0d0d0d").style("stroke-width",4);
       });
+
+      // circles.style("stroke", "#0d0d0d").style("stroke-width",4);
     }
 
-
-    
     function make_carve(){
       // var d = $.Deferred();
 

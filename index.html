@@ -17,6 +17,7 @@
   
 
 </head> -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
 
 <style>
   canvas { display: block; vertical-align: middle; position:absolute; left:0; right:0; top:0; bottom:0; margin:auto; }  
@@ -42,7 +43,13 @@
     top:0; bottom:0;
     margin:auto;
     pointer-events: none;
+  }
 
+  #palette{
+    z-index: 50;
+    position:absolute;
+    top:0; bottom: 0;
+    margin: auto;
   }
 
   .pattern{
@@ -92,7 +99,6 @@
     canvas = document.getElementById("myCanvas");
     width = window.innerWidth || e.clientWidth || g.clientWidth;;
     height = window.innerHeight || e.clientHeight|| g.clientHeight;
-    console.log(width);
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
     var ctx = $("#myCanvas")[0].getContext('2d');
     ctx.canvas.height = height;
@@ -119,9 +125,36 @@
     stage.addChild(drawingCanvas);
     stage.update();
 
+    var jsonColors=[];
     make_carve();
+    make_palette();
+    function make_palette(){
+      for (var i=0; i<colors.length; i++){
+        jsonColors.push({"i":i, "color":colors[i]})
+      }
+      var svgContainer = d3.select("body").append("svg").attr("width", 200).attr("height", 400).attr("id", "palette");
+      var circles = svgContainer.selectAll("circle")
+                         .data(jsonColors)
+                         .enter()
+                         .append("circle");
+
+      var circleAttributes = circles
+                      .attr("cx", function (d) { return d.i%2 * 35+ 20 })
+                      .attr("cy", function (d) { return ~~(d.i/2) * 35 + 20 })
+                      .attr("r", function (d) { return 15 })
+                      .style("fill", function(d) { return d.color; })
+                      .style("stroke", "black")
+                      .style("stroke-width", 3);
+
+      circles.on('click', function(d) {
+        color = d.color;
+      });
+    }
+
+
+    
     function make_carve(){
-      var d = $.Deferred();
+      // var d = $.Deferred();
 
       base_image = new Image();
       base_image.src = 'carve.png';
@@ -132,11 +165,11 @@
         // "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
       });
 
-      setTimeout(function () {
-        d.resolve();
-      }, 500);
+      // setTimeout(function () {
+      //   d.resolve();
+      // }, 500);
       
-      return d;
+      // return d;
     }
   }
 
@@ -146,8 +179,8 @@
       stage.clear();
       stage.removeChild(title);
     }
-    color = colors[(index++) % colors.length];
-    stroke = Math.random() * 30 + 10 | 0;
+    // color = colors[(index++) % colors.length];
+    stroke = 30;
     oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
     oldMidPt = oldPt.clone();
     stage.addEventListener("stagemousemove", handleMouseMove);
@@ -194,6 +227,7 @@
 </script>
 
 <!-- <script src="script.js"></script> -->
+
 </head>
 
 <body onload="init();">
@@ -205,6 +239,8 @@
     </div>
 
 <!-- <div class="pattern"></div> -->
+<!-- <svg id="palette"></svg> -->
 <canvas id="myCanvas" ></canvas>
+
 </body>
 </html>

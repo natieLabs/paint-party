@@ -18,6 +18,7 @@
 
 </head> -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 <style>
   canvas { display: block; vertical-align: middle; position:absolute; left:0; right:0; top:0; bottom:0; margin:auto; }  
@@ -40,6 +41,14 @@
   }
   #carve{
      display: hidden; vertical-align: middle; position:absolute; left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+    pointer-events: none;
+  }
+
+  #carveout{
+    display: hidden;
+    vertical-align: middle; position:absolute; left:0; right:0;
     top:0; bottom:0;
     margin:auto;
     pointer-events: none;
@@ -95,6 +104,8 @@
   var stroke;
   var index;
 
+  var IMG_DATA;
+
   function init() {
     canvas = document.getElementById("myCanvas");
     width = window.innerWidth || e.clientWidth || g.clientWidth;;
@@ -130,6 +141,7 @@
     var jsonColors=[];
     make_carve();
     make_palette();
+
     function make_palette(){
       for (var i=0; i<colors.length; i++){
         jsonColors.push({"i":i, "color":colors[i]})
@@ -147,16 +159,33 @@
                       .style("fill", function(d) { return d.color; })
                       .filter(function(d){return d.i==0})
                       .style("stroke", "#0d0d0d").style("stroke-width",4)
-                      // .style("stroke", "black")
-                      // .style("stroke-width", 3);
 
       circles.on('click', function(d) {
         color = d.color;
         circles.transition().attr("r", 18).style("stroke", "none");
-        d3.select(this).transition().attr("r", 23).transition().attr("r", 18).style("stroke", "#0d0d0d").style("stroke-width",4);
+        d3.select(this).transition().attr("r", 23)
+                       .transition().attr("r", 18)
+                       .style("stroke", "#0d0d0d")
+                       .style("stroke-width",4);
       });
 
-      // circles.style("stroke", "#0d0d0d").style("stroke-width",4);
+      var savebutton = svgContainer.append("g").attr("id", "save");
+      var savecircle = savebutton.append("circle")
+                                   .attr("cx", function (d) { return colors.length%2 * 45+ 40 })
+                                   .attr("cy", function (d) { return ~~(colors.length/2) * 45 + 40 })
+                                   .attr("r", function (d) { return 18 })
+                                   .style("fill", "none")
+                                   .style("stroke", "#0d0d0d")
+                                   .style("stroke-width",4);
+      
+      savebutton.append("text").attr('font-family', 'FontAwesome')
+      .attr("x", colors.length%2 * 45+ 40)
+      .attr("y", ~~(colors.length/2) * 45 + 40)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .attr('font-size', '20px')
+      .text(function(d) { return '\uf063' }); 
+
     }
 
     function make_carve(){
@@ -171,11 +200,16 @@
         // "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
       });
 
-      // setTimeout(function () {
-      //   d.resolve();
-      // }, 500);
-      
-      // return d;
+      var canvas = document.getElementById('carveout');
+      var ctx = canvas.getContext("2d");
+      canvas.width = document.getElementById('carve').width;
+      canvas.height = document.getElementById('carve').width;
+      base_image.onload = function(){
+        ctx.drawImage(base_image, 0, 0, canvas.width, canvas.height);
+        ctx.fill();
+        IMG_DATA = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      }
+
     }
   }
 
@@ -247,6 +281,7 @@
 <!-- <div class="pattern"></div> -->
 <!-- <svg id="palette"></svg> -->
 <canvas id="myCanvas" ></canvas>
+<canvas id="carveout" ></canvas>
 
 </body>
 </html>

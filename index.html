@@ -115,14 +115,14 @@
   function init() {
     canvas = document.getElementById("myCanvas");
 
-    // width = window.innerWidth || e.clientWidth || g.clientWidth;;
-    height = window.innerHeight || e.clientHeight|| g.clientHeight;
-    width = height;
+    var w = window.innerWidth || e.clientWidth || g.clientWidth;
+    var h = window.innerHeight || e.clientHeight|| g.clientHeight;
+    var side = Math.min(w,h);
+
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
     var ctx = $("#myCanvas")[0].getContext('2d');
-    ctx.canvas.height = height;
-    ctx.canvas.width = width;
-
+    ctx.canvas.height = side;
+    ctx.canvas.width = side;
 
     index = 0;
     colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#000000"];
@@ -141,13 +141,7 @@
 
     stage.addEventListener("stagemousedown", handleMouseDown);
     stage.addEventListener("stagemouseup", handleMouseUp);
-
-    // ctx.beginPath();
-    // ctx.arc(300,125,50, 0, 2 * Math.PI, false);
-    // ctx.clip()
-
     stage.addChild(drawingCanvas);
-
     stage.update();
 
     make_carve();
@@ -163,7 +157,7 @@
       stage.clear();
       stage.removeChild(title);
     }
-    // color = colors[(index++) % colors.length];
+
     stroke = 30;
     oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
     oldMidPt = oldPt.clone();
@@ -173,27 +167,17 @@
   function handleMouseMove(event) {
     if (!event.primary) { return; }
     var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1, oldPt.y + stage.mouseY >> 1);
+    drawingCanvas.graphics.clear()
+        .setStrokeStyle(stroke, 'round', 'round')
+        .beginStroke(color).moveTo(midPt.x, midPt.y)
+        .curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
 
-    // var i = ((carveCanvas.width * midPt.y) + midPt.x) * 4 + 3;
-    // alpha = IMG_DATA.data[i];
+    oldPt.x   = stage.mouseX;
+    oldPt.y   = stage.mouseY;
+    oldMidPt.x = midPt.x;
+    oldMidPt.y = midPt.y;
 
-    
-    // console.log(IMG_DATA.data.reduce(function(a, b) {return a + b;}))
-
-
-    // console.log(midPt.x, midPt.y, i, alpha);
-    // if (alpha==0) {
-
-      drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
-
-      oldPt.x = stage.mouseX;
-      oldPt.y = stage.mouseY;
-
-      oldMidPt.x = midPt.x;
-      oldMidPt.y = midPt.y;
-
-      stage.update();
-    // }
+    stage.update();
   }
 
   function handleMouseUp(event) {
@@ -241,7 +225,7 @@
                      .style("fill", "none")
                      .style("stroke", "#0d0d0d")
                      .style("stroke-width",4);
-    // savecircle.append("a").attr("download","").attr("id", "downloadURL");
+
     savebutton.append("text").attr('font-family', 'FontAwesome')
               .attr("x", colors.length%2 * 45+ 40)
               .attr("y", ~~(colors.length/2) * 45 + 40)
@@ -253,15 +237,7 @@
 
   function make_carve(){
     var d = $.Deferred();
-
     base_image = new Image();
-    
-    // base_image.setAttribute("id", "carve");
-    // $(document.body).append(base_image);
-    // $('#carve').attr({
-    //   "width" :  parseInt($('#myCanvas').css("width")) + "px",
-    //   // "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
-    // });
 
     var canvas = document.getElementById('carveout');
     // var canvas = document.getElementById('myCanvas');
@@ -277,23 +253,13 @@
 
     base_image.onload = function(){
       ctx.drawImage(base_image, 0, 0, canvas.width, canvas.height);
-
-      // if (canvas.width>canvas.height){
-      //   ctx.drawImage(base_image, diff, 0, longedge-diff, shortedge);
-      //   console.log("diff: ", longedge-diff-diff, shortedge)
-      // } else {
-      //   ctx.drawImage(base_image, 0, diff, shortedge, longedge-diff);
-      // }
       ctx.fill();
-      // IMG_DATA = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      // var zeroes = IMG_DATA.data.filter(function(value) { return value == 0 }).length;
-      // console.log(IMG_DATA.data.length, "zeroes: ", zeroes);
     }
     base_image.src = 'carve.png';
 
     setTimeout(function () {
-        d.resolve();
+      d.resolve();
       }, 500);
     return d;
   }
@@ -302,20 +268,14 @@
     var canvas = document.getElementById('myCanvas');
     var carve = document.getElementById('carveout');
     var ctx = canvas.getContext("2d");
-    // ctx.canvas.width = document.getElementById('myCanvas').width;
-    // ctx.canvas.height = document.getElementById('myCanvas').width;
-    // ctx.drawImage(carve, carve.width, carve.height);
 
     console.log(canvas.width, canvas.height);
     ctx.drawImage(carve, 0, 0);
     ctx.fill();
 
     canvas.toBlob(function(blob) {
-    saveAs(blob, "pretty image.png");
-});
-
-
-
+      saveAs(blob, "natie painted.png");
+    });
   }
 
 
@@ -339,8 +299,6 @@
 
 </script>
 
-<!-- <script src="script.js"></script> -->
-
 </head>
 
 <body onload="init();">
@@ -351,8 +309,6 @@
         </div>
     </div>
 
-<!-- <div class="pattern"></div> -->
-<!-- <svg id="palette"></svg> -->
 <canvas id="myCanvas" ></canvas>
 <canvas id="carveout" ></canvas>
 

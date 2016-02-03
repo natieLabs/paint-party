@@ -18,6 +18,8 @@
 
 </head> -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="canvas-toBlob.js"></script>
+<script src="FileSaver.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 <style>
@@ -47,7 +49,6 @@
   }
 
   #carveout{
-    display: hidden;
     vertical-align: middle; position:absolute; left:0; right:0;
     top:0; bottom:0;
     margin:auto;
@@ -105,12 +106,18 @@
   var index;
   var jsonColors=[];
 
-  var IMG_DATA;
+  var savecircle=null;
+
+  var IMG_DATA=null;
+
+  var carveCanvas=null;
 
   function init() {
     canvas = document.getElementById("myCanvas");
-    width = window.innerWidth || e.clientWidth || g.clientWidth;;
+
+    // width = window.innerWidth || e.clientWidth || g.clientWidth;;
     height = window.innerHeight || e.clientHeight|| g.clientHeight;
+    width = height;
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
     var ctx = $("#myCanvas")[0].getContext('2d');
     ctx.canvas.height = height;
@@ -135,16 +142,18 @@
     stage.addEventListener("stagemousedown", handleMouseDown);
     stage.addEventListener("stagemouseup", handleMouseUp);
 
+    // ctx.beginPath();
+    // ctx.arc(300,125,50, 0, 2 * Math.PI, false);
+    // ctx.clip()
 
     stage.addChild(drawingCanvas);
+
     stage.update();
 
-    
     make_carve();
     make_palette();
 
-    
-
+    $("#save").on("click", save_img)
 
   }
 
@@ -165,15 +174,26 @@
     if (!event.primary) { return; }
     var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1, oldPt.y + stage.mouseY >> 1);
 
-    drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+    // var i = ((carveCanvas.width * midPt.y) + midPt.x) * 4 + 3;
+    // alpha = IMG_DATA.data[i];
 
-    oldPt.x = stage.mouseX;
-    oldPt.y = stage.mouseY;
+    
+    // console.log(IMG_DATA.data.reduce(function(a, b) {return a + b;}))
 
-    oldMidPt.x = midPt.x;
-    oldMidPt.y = midPt.y;
 
-    stage.update();
+    // console.log(midPt.x, midPt.y, i, alpha);
+    // if (alpha==0) {
+
+      drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+
+      oldPt.x = stage.mouseX;
+      oldPt.y = stage.mouseY;
+
+      oldMidPt.x = midPt.x;
+      oldMidPt.y = midPt.y;
+
+      stage.update();
+    // }
   }
 
   function handleMouseUp(event) {
@@ -213,14 +233,15 @@
     });
 
     var savebutton = svgContainer.append("g").attr("id", "save");
-    var savecircle = savebutton.append("circle")
+
+    savecircle = savebutton.append("circle")
                      .attr("cx", function (d) { return colors.length%2 * 45+ 40 })
                      .attr("cy", function (d) { return ~~(colors.length/2) * 45 + 40 })
                      .attr("r", function (d) { return 18 })
                      .style("fill", "none")
                      .style("stroke", "#0d0d0d")
                      .style("stroke-width",4);
-    
+    // savecircle.append("a").attr("download","").attr("id", "downloadURL");
     savebutton.append("text").attr('font-family', 'FontAwesome')
               .attr("x", colors.length%2 * 45+ 40)
               .attr("y", ~~(colors.length/2) * 45 + 40)
@@ -231,26 +252,72 @@
   }
 
   function make_carve(){
+    var d = $.Deferred();
+
     base_image = new Image();
-    base_image.src = 'carve.png';
-    base_image.setAttribute("id", "carve");
-    $(document.body).append(base_image);
-    $('#carve').attr({
-      "width" :  parseInt($('#myCanvas').css("width")) + "px",
-      // "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
-    });
+    
+    // base_image.setAttribute("id", "carve");
+    // $(document.body).append(base_image);
+    // $('#carve').attr({
+    //   "width" :  parseInt($('#myCanvas').css("width")) + "px",
+    //   // "height" : 1.1 * parseInt($('#myCanvas').css("width")) + "px",
+    // });
 
     var canvas = document.getElementById('carveout');
+    // var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext("2d");
-    canvas.width = document.getElementById('carve').width;
-    canvas.height = document.getElementById('carve').width;
+    // ctx.globalCompositeOperation="destination-atop";
+    ctx.canvas.width = document.getElementById('myCanvas').height;
+    ctx.canvas.height = document.getElementById('myCanvas').height;
+    var shortedge = Math.min(canvas.width, canvas.height);
+    var longedge = Math.max(canvas.width, canvas.height);
+    var diff = (longedge-shortedge)/2;
+
+    console.log(longedge,shortedge,diff);
+
     base_image.onload = function(){
       ctx.drawImage(base_image, 0, 0, canvas.width, canvas.height);
+
+      // if (canvas.width>canvas.height){
+      //   ctx.drawImage(base_image, diff, 0, longedge-diff, shortedge);
+      //   console.log("diff: ", longedge-diff-diff, shortedge)
+      // } else {
+      //   ctx.drawImage(base_image, 0, diff, shortedge, longedge-diff);
+      // }
       ctx.fill();
-      IMG_DATA = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      // IMG_DATA = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      // var zeroes = IMG_DATA.data.filter(function(value) { return value == 0 }).length;
+      // console.log(IMG_DATA.data.length, "zeroes: ", zeroes);
     }
+    base_image.src = 'carve.png';
+
+    setTimeout(function () {
+        d.resolve();
+      }, 500);
+    return d;
+  }
+
+  function save_img(){
+    var canvas = document.getElementById('myCanvas');
+    var carve = document.getElementById('carveout');
+    var ctx = canvas.getContext("2d");
+    // ctx.canvas.width = document.getElementById('myCanvas').width;
+    // ctx.canvas.height = document.getElementById('myCanvas').width;
+    // ctx.drawImage(carve, carve.width, carve.height);
+
+    console.log(canvas.width, canvas.height);
+    ctx.drawImage(carve, 0, 0);
+    ctx.fill();
+
+    canvas.toBlob(function(blob) {
+    saveAs(blob, "pretty image.png");
+});
+
+
 
   }
+
 
   // function sizeCanvas(){
   //   width = window.innerWidth || e.clientWidth || g.clientWidth;;

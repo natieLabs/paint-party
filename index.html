@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 <!-- <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -13,287 +13,371 @@
 <script src="canvas-toBlob.js"></script>
 <script src="FileSaver.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
 <style>
-  canvas { display: block; vertical-align: middle; position:absolute; left:0; right:0; top:0; bottom:0; margin:auto; }  
-  body {background: #f2f2f2;
-      -khtml-user-select: none;
+canvas {
+    display: block;
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+body {
+    background: #f2f2f2;
+    -khtml-user-select: none;
     -o-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    overflow: hidden;}
-  #undefined {
+    overflow: hidden;
+}
+
+#undefined {
     padding: 40px;
-    top:50%;
-    left:50%;
-  }
-  .content{
-    vertical-align: middle; position:absolute; left:0; right:0;
-    top:0; bottom:0;
-    margin:auto;
-  }
-  #carve{
-     display: hidden; vertical-align: middle; position:absolute; left:0; right:0;
-    top:0; bottom:0;
-    margin:auto;
-    pointer-events: none;
-  }
+    top: 50%;
+    left: 50%;
+}
 
-  #carveout{
-    vertical-align: middle; position:absolute; left:0; right:0;
-    top:0; bottom:0;
-    margin:auto;
-    pointer-events: none;
-  }
-
-  #palette{
-    z-index: 50;
-    position:absolute;
-    top:0; bottom: 0;
+.content {
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     margin: auto;
-  }
+}
 
-  .pattern{
+#carve {
+    display: hidden;
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    pointer-events: none;
+}
+
+#carveout {
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    pointer-events: none;
+}
+
+#palette {
+    z-index: 50;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#bgPicker {
+    z-index: 50;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 5%;
+    background-color: rgba(0, 0, 0, .2);
+}
+
+#bgPicker > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/*.pattern {
     background: url("pattern.jpg") center/cover no-repeat transparent;
-    /*position: relative;*/
     z-index: 20;
     position: absolute;
     display: block;
     width: 100%;
     height: 100%;
     border-image-repeat: stretch;
-    opacity: 0.15 
-  }
+    opacity: 0.15
+}*/
 </style>
-
 <!-- <body> -->
-    
 <!-- </body> -->
-
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <title>paint natie</title>
-  <script src="jquery.lazylinepainter-1.7.0.js"></script>
-  
-
-  <!-- <link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/> -->
-  <!-- <link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/> -->
-  <script src="examples.js"></script>
-
-  <script src="easeljs-NEXT.combined.js"></script>
-  <!-- We also provide hosted minified versions of all CreateJS libraries.
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <title>paint natie</title>
+    <script src="jquery.lazylinepainter-1.7.0.js"></script>
+    <!-- <link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/> -->
+    <!-- <link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/> -->
+    <script src="examples.js"></script>
+    <script src="easeljs-NEXT.combined.js"></script>
+    <!-- We also provide hosted minified versions of all CreateJS libraries.
     http://code.createjs.com -->
+    <script id="editable">
+    var canvas, stage, carve;
+    var ctx, ctxcarve;
+    var side;
+    var drawingCanvas;
+    var oldPt;
+    var oldMidPt;
+    var title;
+    var color;
+    var stroke;
+    var index;
+    var jsonColors = [];
+    var savecircle = null;
+    var IMG_DATA = null;
 
-<script id="editable">
-  var canvas, stage, carve;
-  var ctx, ctxcarve;
-  var side;
-  var drawingCanvas;
-  var oldPt;
-  var oldMidPt;
-  var title;
-  var color;
-  var stroke;
-  var index;
-  var jsonColors=[];
+    var carveCanvas = null;
 
-  var savecircle=null;
+    function init() {
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext('2d');
 
-  var IMG_DATA=null;
+        carve = document.getElementById('carveout');
+        ctxcarve = carve.getContext("2d");
 
-  var carveCanvas=null;
+        var w = window.innerWidth || e.clientWidth || g.clientWidth;
+        var h = window.innerHeight || e.clientHeight || g.clientHeight;
+        side = Math.min(w, h);
 
-  function init() {
-    canvas = document.getElementById("myCanvas");
-    ctx = canvas.getContext('2d');
+        // $("#myCanvas")[0].attr("width", width).attr("height", height);
 
-    carve = document.getElementById('carveout');
-    ctxcarve = carve.getContext("2d");
+        ctx.canvas.height = side;
+        ctx.canvas.width = side;
 
-    var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight || e.clientHeight|| g.clientHeight;
-    side = Math.min(w,h);
+        index = 0;
+        colors = ["#B03060", "#FE9A76", "#FFD700", "#32CD32", "#016936", "#008080", "#0E6EB8", "#EE82EE", "#B413EC", "#FF1493", "#A52A2A", "#A0A0A0", "#f2f2f2", "#000000"];
 
-    // $("#myCanvas")[0].attr("width", width).attr("height", height);
-    
-    ctx.canvas.height = side;
-    ctx.canvas.width = side;
+        color = colors[0];
 
-    index = 0;
-    colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#f2f2f2", "#000000"];
+        //check to see if we are running in a browser with touch support
+        stage = new createjs.Stage(canvas);
+        stage.autoClear = false;
+        stage.enableDOMEvents(true);
 
-    color=colors[0];
+        createjs.Touch.enable(stage);
+        createjs.Ticker.setFPS(24);
 
-    //check to see if we are running in a browser with touch support
-    stage = new createjs.Stage(canvas);
-    stage.autoClear = false;
-    stage.enableDOMEvents(true);
+        drawingCanvas = new createjs.Shape();
 
-    createjs.Touch.enable(stage);
-    createjs.Ticker.setFPS(24);
+        stage.addEventListener("stagemousedown", handleMouseDown);
+        stage.addEventListener("stagemouseup", handleMouseUp);
+        stage.addChild(drawingCanvas);
+        stage.update();
 
-    drawingCanvas = new createjs.Shape();
+        make_carve("carve0.png");
+        make_palette();
+        make_bgPicker()
 
-    stage.addEventListener("stagemousedown", handleMouseDown);
-    stage.addEventListener("stagemouseup", handleMouseUp);
-    stage.addChild(drawingCanvas);
-    stage.update();
+        $("#save").on("click", save_img)
 
-    make_carve();
-    make_palette();
+        $('img').on('click', function(event) {
+            var moo = $(this).attr('src');
+            console.log(moo);
+            make_carve(moo);
+        });
 
-    $("#save").on("click", save_img)
-
-  }
-
-  function handleMouseDown(event) {
-    if (!event.primary) { return; }
-    if (stage.contains(title)) {
-      stage.clear();
-      stage.removeChild(title);
     }
 
-    stroke = 30;
-    oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
-    oldMidPt = oldPt.clone();
-    stage.addEventListener("stagemousemove", handleMouseMove);
-  }
+    function handleMouseDown(event) {
+        if (!event.primary) {
+            return;
+        }
+        if (stage.contains(title)) {
+            stage.clear();
+            stage.removeChild(title);
+        }
 
-  function handleMouseMove(event) {
-    if (!event.primary) { return; }
-    var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1, oldPt.y + stage.mouseY >> 1);
-    drawingCanvas.graphics.clear()
-        .setStrokeStyle(stroke, 'round', 'round')
-        .beginStroke(color).moveTo(midPt.x, midPt.y)
-        .curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
-
-    oldPt.x   = stage.mouseX;
-    oldPt.y   = stage.mouseY;
-    oldMidPt.x = midPt.x;
-    oldMidPt.y = midPt.y;
-
-    stage.update();
-  }
-
-  function handleMouseUp(event) {
-    if (!event.primary) { return; }
-    stage.removeEventListener("stagemousemove", handleMouseMove);
-  }
-
-  function make_palette(){
-    for (var i=0; i<colors.length; i++){
-      jsonColors.push({"i":i, "color":colors[i]})
+        stroke = 30;
+        oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
+        oldMidPt = oldPt.clone();
+        stage.addEventListener("stagemousemove", handleMouseMove);
     }
-    var svgContainer = d3.select("body").append("svg")
-                      .attr("width", 200)
-                      .attr("height", 400)
-                      .attr("id", "palette");
 
-    var circles = svgContainer.selectAll("circle")
-                       .data(jsonColors)
-                       .enter()
-                       .append("circle");
+    function handleMouseMove(event) {
+        if (!event.primary) {
+            return;
+        }
+        var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1, oldPt.y + stage.mouseY >> 1);
+        drawingCanvas.graphics.clear()
+            .setStrokeStyle(stroke, 'round', 'round')
+            .beginStroke(color).moveTo(midPt.x, midPt.y)
+            .curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
 
-    var circleAttributes = circles
-                    .attr("cx", function (d) { return d.i%2 * 45+ 40 })
-                    .attr("cy", function (d) { return ~~(d.i/2) * 45 + 40 })
-                    .attr("r", function (d) { return 18 })
-                    .style("fill", function(d) { return d.color; })
-                    .filter(function(d){return d.i==0})
-                    .style("stroke", "#0d0d0d").style("stroke-width",4)
+        oldPt.x = stage.mouseX;
+        oldPt.y = stage.mouseY;
+        oldMidPt.x = midPt.x;
+        oldMidPt.y = midPt.y;
 
-    circles.filter(function(d){return d.color == "#f2f2f2"})
-      .style("stroke", "#0d0d0d").style("stroke-width",4)
-
-    circles.on('click', function(d) {
-      color = d.color;
-      circles.transition().attr("r", 18).filter(function(d){return d.color != "#f2f2f2"}).style("stroke", "none");
-      d3.select(this).transition().attr("r", 23)
-                     .transition().attr("r", 18)
-                     .style("stroke", "#0d0d0d")
-                     .style("stroke-width",4);
-    });
-
-    var savebutton = svgContainer.append("g").attr("id", "save");
-
-    savecircle = savebutton.append("circle")
-                     .attr("cx", function (d) { return colors.length%2 * 45+ 40 })
-                     .attr("cy", function (d) { return ~~(colors.length/2) * 45 + 40 })
-                     .attr("r", function (d) { return 18 })
-                     .style("fill", "none")
-                     .style("stroke", "#0d0d0d")
-                     .style("stroke-width",4);
-
-    savebutton.append("text").attr('font-family', 'FontAwesome')
-              .attr("x", colors.length%2 * 45+ 40)
-              .attr("y", ~~(colors.length/2) * 45 + 40)
-              .attr('text-anchor', 'middle')
-              .attr('dominant-baseline', 'central')
-              .attr('font-size', '20px')
-              .text(function(d) { return '\uf063' }); 
-  }
-
-  function make_carve(){
-    var d = $.Deferred();
-    base_image = new Image();
-    carve.width = carve.height = side;
-
-    base_image.onload = function(){
-      ctxcarve.drawImage(base_image, 0, 0, side, side);
-      ctxcarve.fill();
+        stage.update();
     }
-    base_image.src = 'carve.png';
 
-    setTimeout(function () {
-      d.resolve();
-      }, 500);
-    return d;
-  }
+    function handleMouseUp(event) {
+        if (!event.primary) {
+            return;
+        }
+        stage.removeEventListener("stagemousemove", handleMouseMove);
+    }
 
-  function save_img(){
-    ctx.drawImage(carve, 0, 0);
-    ctx.fill();
+    function make_palette() {
+        for (var i = 0; i < colors.length; i++) {
+            jsonColors.push({
+                "i": i,
+                "color": colors[i]
+            })
+        }
+        var svgContainer = d3.select("body").append("svg")
+            .attr("width", 200)
+            .attr("height", 400)
+            .attr("id", "palette");
 
-    canvas.toBlob(function(blob) {
-      saveAs(blob, "natie painted.png");
-    });
-  }
+        var circles = svgContainer.selectAll("circle")
+            .data(jsonColors)
+            .enter()
+            .append("circle");
 
-  // function sizeCanvas(){
-  //   width = window.innerWidth || e.clientWidth || g.clientWidth;;
-  //   height = window.innerHeight || e.clientHeight|| g.clientHeight;
-  //   console.log(width);c
-  //   // $("#myCanvas")[0].attr("width", width).attr("height", height);
-  //   var ctx = $("#myCanvas")[0];
-  //   ctx.canvas.height = 600;
-  //   ctx.canvas.width = 600;
-  //   // $("undefined").attr("width", width).attr("height", height);
+        var circleAttributes = circles
+            .attr("cx", function(d) {
+                return d.i % 2 * 45 + 40
+            })
+            .attr("cy", function(d) {
+                return ~~(d.i / 2) * 45 + 40
+            })
+            .attr("r", function(d) {
+                return 18
+            })
+            .style("fill", function(d) {
+                return d.color;
+            })
+            .filter(function(d) {
+                return d.i == 0
+            })
+            .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
-  // }
+        circles.filter(function(d) {
+                return d.color == "#f2f2f2"
+            })
+            .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
-  // sizeCanvas();
+        circles.on('click', function(d) {
+            color = d.color;
+            circles.transition().attr("r", 18).filter(function(d) {
+                return d.color != "#f2f2f2"
+            }).style("stroke", "none");
+            d3.select(this).transition().attr("r", 23)
+                .transition().attr("r", 18)
+                .style("stroke", "#0d0d0d")
+                .style("stroke-width", 4);
+        });
 
-  // $( window ).resize(function() {
-  //   sizeCanvas();
-  // });
+        var savebutton = svgContainer.append("g").attr("id", "save");
 
-</script>
+        savecircle = savebutton.append("circle")
+            .attr("cx", function(d) {
+                return colors.length % 2 * 45 + 40
+            })
+            .attr("cy", function(d) {
+                return ~~(colors.length / 2) * 45 + 40
+            })
+            .attr("r", function(d) {
+                return 18
+            })
+            .style("fill", "none")
+            .style("stroke", "#0d0d0d")
+            .style("stroke-width", 4);
 
+        savebutton.append("text").attr('font-family', 'FontAwesome')
+            .attr("x", colors.length % 2 * 45 + 40)
+            .attr("y", ~~(colors.length / 2) * 45 + 40)
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'central')
+            .attr('font-size', '20px')
+            .text(function(d) {
+                return '\uf063'
+            });
+    }
+
+    function make_carve(src) {
+        var d = $.Deferred();
+        base_image = new Image();
+        carve.width = carve.height = side;
+
+        base_image.onload = function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctxcarve.clearRect(0, 0, carve.width, carve.height);
+            ctxcarve.drawImage(base_image, 0, 0, side, side);
+            ctxcarve.fill();
+        }
+        base_image.src = src;
+
+        setTimeout(function() {
+            d.resolve();
+        }, 500);
+        return d;
+    }
+
+    function make_bgPicker() {
+        var n = 3;
+        var src;
+        for (var i = 0; i < n; i++) {
+            src = "carve" + i + ".png";
+            console.log(src);
+            $("#bgPicker").append("<img src='" + src + "'></img>")
+        }
+
+    }
+
+    function save_img() {
+        ctx.drawImage(carve, 0, 0);
+        ctx.fill();
+
+        canvas.toBlob(function(blob) {
+            saveAs(blob, "natie painted.png");
+        });
+    }
+
+    // function sizeCanvas(){
+    //   width = window.innerWidth || e.clientWidth || g.clientWidth;;
+    //   height = window.innerHeight || e.clientHeight|| g.clientHeight;
+    //   console.log(width);c
+    //   // $("#myCanvas")[0].attr("width", width).attr("height", height);
+    //   var ctx = $("#myCanvas")[0];
+    //   ctx.canvas.height = 600;
+    //   ctx.canvas.width = 600;
+    //   // $("undefined").attr("width", width).attr("height", height);
+
+    // }
+
+    // sizeCanvas();
+
+    // $( window ).resize(function() {
+    //   sizeCanvas();
+    // });
+    </script>
 </head>
 
 <body onload="init();">
-
-<div class="content">
+    <div class="content">
         <div class="logo-wrap">
             <div id='undefined'></div>
         </div>
     </div>
-
-<canvas id="myCanvas" ></canvas>
-<canvas id="carveout" ></canvas>
-
+    <canvas id="myCanvas"></canvas>
+    <canvas id="carveout"></canvas>
+    <div id="bgPicker"></div>
 </body>
+
 </html>

@@ -98,6 +98,11 @@ body {
     max-height: 100%;
 }
 
+#blank {
+    width: 100%;
+    background-color: white;
+}
+
 
 /*.pattern {
     background: url("pattern.jpg") center/cover no-repeat transparent;
@@ -180,14 +185,21 @@ body {
 
         make_carve("carve0.png");
         make_palette();
-        make_bgPicker()
+        make_bgPicker().done(function() {
+            console.log( document.getElementById('img0').getBoundingClientRect().height);
+
+            $("#blank").css("height", document.getElementById('img0').getBoundingClientRect().height)
+        })
 
         $("#save").on("click", save_img)
+        $("#blank").on("click", function(){
+          ctx.clearRect(0,0, canvas.width, canvas.height);
+          ctxcarve.clearRect(0,0,carve.width, carve.height);
+        })
 
         $('img').on('click', function(event) {
-            var moo = $(this).attr('src');
-            console.log(moo);
-            make_carve(moo);
+            var src = $(this).attr('src');
+            make_carve(src);
         });
 
     }
@@ -311,7 +323,7 @@ body {
     }
 
     function make_carve(src) {
-        var d = $.Deferred();
+        // var d = $.Deferred();
         base_image = new Image();
         carve.width = carve.height = side;
 
@@ -323,21 +335,25 @@ body {
         }
         base_image.src = src;
 
-        setTimeout(function() {
-            d.resolve();
-        }, 500);
-        return d;
+        // setTimeout(function() {
+        //     d.resolve();
+        // }, 500);
+        // return d;
     }
 
     function make_bgPicker() {
+        var d = $.Deferred();
         var n = 3;
         var src;
         for (var i = 0; i < n; i++) {
             src = "carve" + i + ".png";
             console.log(src);
-            $("#bgPicker").append("<img src='" + src + "'></img>")
+            $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>")
         }
-
+        setTimeout(function() {
+            d.resolve();
+        }, 500);
+        return d;
     }
 
     function save_img() {
@@ -377,7 +393,9 @@ body {
     </div>
     <canvas id="myCanvas"></canvas>
     <canvas id="carveout"></canvas>
-    <div id="bgPicker"></div>
+    <div id="bgPicker">
+        <div id="blank"></div>
+    </div>
 </body>
 
 </html>

@@ -123,7 +123,7 @@
     ctx.canvas.width = side;
 
     index = 0;
-    colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#000000"];
+    colors = ["#B03060","#FE9A76", "#FFD700", "#32CD32", "#016936","#008080", "#0E6EB8", "#EE82EE", "#B413EC","#FF1493", "#A52A2A","#A0A0A0", "#f2f2f2", "#000000"];
 
     color=colors[0];
 
@@ -205,9 +205,12 @@
                     .filter(function(d){return d.i==0})
                     .style("stroke", "#0d0d0d").style("stroke-width",4)
 
+    circles.filter(function(d){return d.color == "#f2f2f2"})
+      .style("stroke", "#0d0d0d").style("stroke-width",4)
+
     circles.on('click', function(d) {
       color = d.color;
-      circles.transition().attr("r", 18).style("stroke", "none");
+      circles.transition().attr("r", 18).filter(function(d){return d.color != "#f2f2f2"}).style("stroke", "none");
       d3.select(this).transition().attr("r", 23)
                      .transition().attr("r", 18)
                      .style("stroke", "#0d0d0d")
@@ -258,7 +261,6 @@
       saveAs(blob, "natie painted.png");
     });
   }
-
 
   // function sizeCanvas(){
   //   width = window.innerWidth || e.clientWidth || g.clientWidth;;

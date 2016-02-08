@@ -3,20 +3,20 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js">
 <!--<![endif]-->
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="scripts/canvas-toBlob.js"></script>
+    <script src="scripts/FileSaver.min.js"></script>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <title>paint natie</title>
+    <script src="scripts/easeljs-NEXT.combined.js"></script>
+    <script src="scripts/script.js"></script>
 </head>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="canvas-toBlob.js"></script>
-<script src="FileSaver.min.js"></script>
-<meta charset="utf-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<title>paint natie</title>
-<script src="easeljs-NEXT.combined.js"></script>
-<script src="script.js"></script>
 <style>
 canvas {
     display: block;
@@ -106,37 +106,9 @@ body {
     width: 100%;
     background-color: white;
 }
-
-
 </style>
-<!-- <body> -->
-<!-- </body> -->
+
 <html lang="en">
-
-<head>
-    
-    <script id="editable">
-    
-
-    // function sizeCanvas(){
-    //   width = window.innerWidth || e.clientWidth || g.clientWidth;;
-    //   height = window.innerHeight || e.clientHeight|| g.clientHeight;
-    //   console.log(width);c
-    //   // $("#myCanvas")[0].attr("width", width).attr("height", height);
-    //   var ctx = $("#myCanvas")[0];
-    //   ctx.canvas.height = 600;
-    //   ctx.canvas.width = 600;
-    //   // $("undefined").attr("width", width).attr("height", height);
-
-    // }
-
-    // sizeCanvas();
-
-    // $( window ).resize(function() {
-    //   sizeCanvas();
-    // });
-    </script>
-</head>
 
 <body onload="init();">
     <div class="content">

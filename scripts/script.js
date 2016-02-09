@@ -57,33 +57,29 @@ function init() {
     make_palette();
     make_bgPicker();
 
-    $("#save").on("click", save_img)
-    $("#blank").on("click", function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctxcarve.clearRect(0, 0, carve.width, carve.height);
-    })
+    $("#save").on("click", save_img);
 
     $('img').on('click', function(event) {
-        // ctx.drawImage(carve, 0, 0);
-        // ctx.fill();
-        // if ($(this).attr('id') == "blank"){
-
-        // }
+        // housekeeping for current canvas
         CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
+        ctx.drawImage(carve, 0, 0);
+        ctx.fill();
+        $('#img' + currentCanvas).attr("src", canvas.toDataURL());
+
+        // update current canvas to point to chosen canvas
         currentCanvas = $(this).attr('id').slice(-1);
         var src = $(this).attr('src');
-        if (CANVAS_CACHE[currentCanvas] == null){
-          clearBoard();
-          make_carve(src);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctxcarve.clearRect(0, 0, carve.width, carve.height);
-          make_carve(src);
-          ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
-        }
-        
-    });
 
+        if (CANVAS_CACHE[currentCanvas] == null) {
+            clearBoard();
+            make_carve(src);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctxcarve.clearRect(0, 0, carve.width, carve.height);
+            make_carve(src);
+            ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
+        }
+    });
 }
 
 function handleMouseDown(event) {
@@ -221,16 +217,16 @@ function make_carve(src) {
     // return d;
 }
 
-function clearBoard(){
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctxcarve.clearRect(0, 0, carve.width, carve.height);
+function clearBoard() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctxcarve.clearRect(0, 0, carve.width, carve.height);
 }
 
 function make_bgPicker() {
     // var d = $.Deferred();
     var n = 4;
     var src;
-    for (var i = 0; i <n; i++) {
+    for (var i = 0; i < n; i++) {
         src = "carve" + i + ".png";
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
@@ -245,7 +241,6 @@ function make_bgPicker() {
 function save_img() {
     ctx.drawImage(carve, 0, 0);
     ctx.fill();
-
     canvas.toBlob(function(blob) {
         saveAs(blob, "natie painted.png");
     });

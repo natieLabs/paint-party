@@ -11,7 +11,7 @@ var index;
 var jsonColors = [];
 var savecircle = null;
 var IMG_DATA = null;
-
+const NUM_CARVES = 4;
 var carveCanvas = null;
 
 var CANVAS_CACHE = [];
@@ -63,25 +63,25 @@ function init() {
 }
 
 function handleCanvasSwitch(event) {
-        // housekeeping for current canvas
-        CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
-        // ctx.drawImage(carve, 0, 0);
-        // $('#img' + currentCanvas).attr("src", canvas.toDataURL());
+    // housekeeping for current canvas
+    CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
+    // ctx.drawImage(carve, 0, 0);
+    // $('#img' + currentCanvas).attr("src", canvas.toDataURL());
 
-        // update current canvas to point to chosen canvas
-        currentCanvas = $(this).attr('id').slice(-1);
-        var src = $(this).attr('src');
+    // update current canvas to point to chosen canvas
+    currentCanvas = $(this).attr('id').slice(-1);
+    var src = $(this).attr('src');
 
-        if (CANVAS_CACHE[currentCanvas] == null) {
-            clearBoard();
-            make_carve(src);
-        } else {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctxcarve.clearRect(0, 0, carve.width, carve.height);
-            make_carve(src);
-            ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
-        }
+    if (CANVAS_CACHE[currentCanvas] == null) {
+        clearBoard();
+        make_carve(src);
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctxcarve.clearRect(0, 0, carve.width, carve.height);
+        make_carve(src);
+        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
+}
 
 function handleMouseDown(event) {
     if (!event.primary) {
@@ -150,6 +150,7 @@ function make_palette() {
         .filter(function(d) {return d.i == 0 })
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
+    // stroke the circle that represents the eraser so it's visible against background
     circles.filter(function(d) {return d.color == "#f2f2f2"})
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
@@ -183,7 +184,27 @@ function make_palette() {
         .text(function(d) {
             return '\uf063'
         });
-}
+
+//     var sharebutton = svgContainer.append("g").attr("id", "share");
+
+//     sharecircle = sharebutton.append("circle")
+//         .attr("cx", function(d) {return (colors.length % 2+1) * 45 + 40 })
+//         .attr("cy", function(d) {return ~~(colors.length / 2) * 45 + 40 })
+//         .attr("r", function(d) {return 18 })
+//         .style("fill", "none")
+//         .style("stroke", "#0d0d0d")
+//         .style("stroke-width", 4);
+
+//     sharebutton.append("text").attr('font-family', 'FontAwesome')
+//         .attr("x", (colors.length % 2+1) * 45 + 40)
+//         .attr("y", ~~(colors.length / 2) * 45 + 40)
+//         .attr('text-anchor', 'middle')
+//         .attr('dominant-baseline', 'central')
+//         .attr('font-size', '20px')
+//         .text(function(d) {
+//             return '\uf09a'
+//         });
+// }
 
 function make_carve(src) {
     // var d = $.Deferred();
@@ -209,9 +230,8 @@ function clearBoard() {
 
 function make_bgPicker() {
     // var d = $.Deferred();
-    var n = 4;
     var src;
-    for (var i = 0; i < n; i++) {
+    for (var i = 0; i < NUM_CARVES; i++) {
         src = "carve" + i + ".png";
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);

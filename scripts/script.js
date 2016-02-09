@@ -14,6 +14,9 @@ var IMG_DATA = null;
 
 var carveCanvas = null;
 
+var CANVAS_CACHE = [];
+var currentCanvas = 0;
+
 function init() {
     canvas = document.getElementById("myCanvas");
     ctx = canvas.getContext('2d');
@@ -63,8 +66,21 @@ function init() {
     })
 
     $('img').on('click', function(event) {
+        ctx.drawImage(carve, 0, 0);
+        ctx.fill();
+        CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
+        currentCanvas = $(this).attr('id').slice(-1);
         var src = $(this).attr('src');
-        make_carve(src);
+        if (CANVAS_CACHE[currentCanvas] == null){
+          clearBoard();
+          make_carve(src);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctxcarve.clearRect(0, 0, carve.width, carve.height);
+          ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
+          make_carve(src);
+        }
+        
     });
 
 }
@@ -193,8 +209,6 @@ function make_carve(src) {
     carve.width = carve.height = side;
 
     base_image.onload = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctxcarve.clearRect(0, 0, carve.width, carve.height);
         ctxcarve.drawImage(base_image, 0, 0, side, side);
         ctxcarve.fill();
     }
@@ -206,17 +220,24 @@ function make_carve(src) {
     // return d;
 }
 
+function clearBoard(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctxcarve.clearRect(0, 0, carve.width, carve.height);
+}
+
 function make_bgPicker() {
     var d = $.Deferred();
     var n = 3;
     var src;
     for (var i = 0; i < n; i++) {
         src = "carve" + i + ".png";
-        $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>")
+        $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
+        CANVAS_CACHE.push(null);
     }
     setTimeout(function() {
         d.resolve();
-    }, 500);
+    }, 100);
+
     return d;
 }
 
@@ -227,4 +248,18 @@ function save_img() {
     canvas.toBlob(function(blob) {
         saveAs(blob, "natie painted.png");
     });
+}
+
+function cloneCanvas(oldCanvas) {
+
+    var newCanvas = document.createElement('canvas');
+    var context = newCanvas.getContext('2d');
+
+    //set dimensions
+    newCanvas.width = oldCanvas.width;
+    newCanvas.height = oldCanvas.height;
+
+    context.drawImage(oldCanvas, 0, 0);
+
+    return newCanvas;
 }

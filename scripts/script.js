@@ -58,6 +58,7 @@ function init() {
     make_bgPicker();
 
     $("#save").on("click", save_img);
+    $("#share").on("click", share_page);
 
     $('img').on('click', handleCanvasSwitch);
 }
@@ -249,6 +250,12 @@ function save_img() {
     canvas.toBlob(function(blob) {
         saveAs(blob, "natie painted.png");
     });
+}
+
+function share_page(){
+
+  var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=http://anniejiao.me/paintnatie/", "pop", "width=600, height=400, scrollbars=no");
+  return false;
 }
 
 function cloneCanvas(oldCanvas) {

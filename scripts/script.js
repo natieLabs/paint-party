@@ -185,26 +185,26 @@ function make_palette() {
             return '\uf063'
         });
 
-//     var sharebutton = svgContainer.append("g").attr("id", "share");
+    var sharebutton = svgContainer.append("g").attr("id", "share");
 
-//     sharecircle = sharebutton.append("circle")
-//         .attr("cx", function(d) {return (colors.length % 2+1) * 45 + 40 })
-//         .attr("cy", function(d) {return ~~(colors.length / 2) * 45 + 40 })
-//         .attr("r", function(d) {return 18 })
-//         .style("fill", "none")
-//         .style("stroke", "#0d0d0d")
-//         .style("stroke-width", 4);
+    sharecircle = sharebutton.append("circle")
+        .attr("cx", function(d) {return (colors.length % 2+1) * 45 + 40 })
+        .attr("cy", function(d) {return ~~(colors.length / 2) * 45 + 40 })
+        .attr("r", function(d) {return 18 })
+        .style("fill", "none")
+        .style("stroke", "#0d0d0d")
+        .style("stroke-width", 4);
 
-//     sharebutton.append("text").attr('font-family', 'FontAwesome')
-//         .attr("x", (colors.length % 2+1) * 45 + 40)
-//         .attr("y", ~~(colors.length / 2) * 45 + 40)
-//         .attr('text-anchor', 'middle')
-//         .attr('dominant-baseline', 'central')
-//         .attr('font-size', '20px')
-//         .text(function(d) {
-//             return '\uf09a'
-//         });
-// }
+    sharebutton.append("text").attr('font-family', 'FontAwesome')
+        .attr("x", (colors.length % 2+1) * 45 + 40)
+        .attr("y", ~~(colors.length / 2) * 45 + 40)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .attr('font-size', '20px')
+        .text(function(d) {
+            return '\uf09a'
+        });
+}
 
 function make_carve(src) {
     // var d = $.Deferred();

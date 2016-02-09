@@ -55,9 +55,7 @@ function init() {
 
     make_carve("carve0.png");
     make_palette();
-    make_bgPicker().done(function() {
-        $("#blank").css("height", document.getElementById('img0').getBoundingClientRect().height)
-    })
+    make_bgPicker();
 
     $("#save").on("click", save_img)
     $("#blank").on("click", function() {
@@ -66,8 +64,11 @@ function init() {
     })
 
     $('img').on('click', function(event) {
-        ctx.drawImage(carve, 0, 0);
-        ctx.fill();
+        // ctx.drawImage(carve, 0, 0);
+        // ctx.fill();
+        // if ($(this).attr('id') == "blank"){
+
+        // }
         CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
         currentCanvas = $(this).attr('id').slice(-1);
         var src = $(this).attr('src');
@@ -77,8 +78,8 @@ function init() {
         } else {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctxcarve.clearRect(0, 0, carve.width, carve.height);
-          ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
           make_carve(src);
+          ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
         }
         
     });
@@ -226,19 +227,19 @@ function clearBoard(){
 }
 
 function make_bgPicker() {
-    var d = $.Deferred();
-    var n = 3;
+    // var d = $.Deferred();
+    var n = 4;
     var src;
-    for (var i = 0; i < n; i++) {
+    for (var i = 0; i <n; i++) {
         src = "carve" + i + ".png";
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
     }
-    setTimeout(function() {
-        d.resolve();
-    }, 100);
+    // setTimeout(function() {
+    //     d.resolve();
+    // }, 100);
 
-    return d;
+    // return d;
 }
 
 function save_img() {

@@ -57,8 +57,8 @@ function init() {
     make_palette();
     make_bgPicker();
 
-    $("#save").on("click", save_img);
-    $("#share").on("click", share_page);
+    $("#save").css("cursor", "pointer").on("click", save_img);
+    $("#share").css("cursor", "pointer").on("click", share_page);
 
     $('img').on('click', handleCanvasSwitch);
 }

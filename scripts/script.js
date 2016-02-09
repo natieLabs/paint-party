@@ -15,7 +15,7 @@ var IMG_DATA = null;
 var carveCanvas = null;
 
 var CANVAS_CACHE = [];
-var currentCanvas = 0;
+var currentCanvas = 1;
 
 function init() {
     canvas = document.getElementById("myCanvas");
@@ -53,18 +53,20 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve("carve0.png");
+    make_carve("carve"+currentCanvas+".png");
     make_palette();
     make_bgPicker();
 
     $("#save").on("click", save_img);
 
-    $('img').on('click', function(event) {
+    $('img').on('click', handleCanvasSwitch);
+}
+
+function handleCanvasSwitch(event) {
         // housekeeping for current canvas
         CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
-        ctx.drawImage(carve, 0, 0);
-        ctx.fill();
-        $('#img' + currentCanvas).attr("src", canvas.toDataURL());
+        // ctx.drawImage(carve, 0, 0);
+        // $('#img' + currentCanvas).attr("src", canvas.toDataURL());
 
         // update current canvas to point to chosen canvas
         currentCanvas = $(this).attr('id').slice(-1);
@@ -79,8 +81,7 @@ function init() {
             make_carve(src);
             ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
         }
-    });
-}
+    }
 
 function handleMouseDown(event) {
     if (!event.primary) {
@@ -119,6 +120,8 @@ function handleMouseUp(event) {
     if (!event.primary) {
         return;
     }
+    ctx.drawImage(carve, 0, 0);
+    $('#img' + currentCanvas).attr("src", canvas.toDataURL());
     stage.removeEventListener("stagemousemove", handleMouseMove);
 }
 
@@ -140,26 +143,14 @@ function make_palette() {
         .append("circle");
 
     var circleAttributes = circles
-        .attr("cx", function(d) {
-            return d.i % 2 * 45 + 40
-        })
-        .attr("cy", function(d) {
-            return ~~(d.i / 2) * 45 + 40
-        })
-        .attr("r", function(d) {
-            return 18
-        })
-        .style("fill", function(d) {
-            return d.color;
-        })
-        .filter(function(d) {
-            return d.i == 0
-        })
+        .attr("cx", function(d) {return d.i % 2 * 45 + 40 })
+        .attr("cy", function(d) {return ~~(d.i / 2) * 45 + 40 })
+        .attr("r", function(d) {return 18 })
+        .style("fill", function(d) {return d.color; })
+        .filter(function(d) {return d.i == 0 })
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
-    circles.filter(function(d) {
-            return d.color == "#f2f2f2"
-        })
+    circles.filter(function(d) {return d.color == "#f2f2f2"})
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
     circles.on('click', function(d) {
@@ -176,15 +167,9 @@ function make_palette() {
     var savebutton = svgContainer.append("g").attr("id", "save");
 
     savecircle = savebutton.append("circle")
-        .attr("cx", function(d) {
-            return colors.length % 2 * 45 + 40
-        })
-        .attr("cy", function(d) {
-            return ~~(colors.length / 2) * 45 + 40
-        })
-        .attr("r", function(d) {
-            return 18
-        })
+        .attr("cx", function(d) {return colors.length % 2 * 45 + 40 })
+        .attr("cy", function(d) {return ~~(colors.length / 2) * 45 + 40 })
+        .attr("r", function(d) {return 18 })
         .style("fill", "none")
         .style("stroke", "#0d0d0d")
         .style("stroke-width", 4);

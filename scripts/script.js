@@ -57,9 +57,6 @@ function init() {
     make_palette();
     make_bgPicker();
 
-    $("#save").css("cursor", "pointer").on("click", save_img);
-    $("#share").css("cursor", "pointer").on("click", share_page);
-
     $('img').on('click', handleCanvasSwitch);
 }
 
@@ -166,7 +163,9 @@ function make_palette() {
             .style("stroke-width", 4);
     });
 
-    var savebutton = svgContainer.append("g").attr("id", "save");
+    var savebutton = svgContainer.append("g").attr("id", "save")
+                                 .attr("style", "cursor: pointer")
+                                 .on("click", save_img);
 
     savecircle = savebutton.append("circle")
         .attr("cx", function(d) {return colors.length % 2 * 45 + 40 })
@@ -182,11 +181,11 @@ function make_palette() {
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '20px')
-        .text(function(d) {
-            return '\uf063'
-        });
+        .text(function(d) {return '\uf063'});
 
-    var sharebutton = svgContainer.append("g").attr("id", "share");
+    var sharebutton = svgContainer.append("g").attr("id", "share")
+                                  .attr("style", "cursor: pointer")
+                                  .on("click", share_page);
 
     sharecircle = sharebutton.append("circle")
         .attr("cx", function(d) {return (colors.length % 2+1) * 45 + 40 })
@@ -207,6 +206,8 @@ function make_palette() {
         });
 }
 
+// create carved canvas to cover artwork
+// src can be url of image or dataURL of canvas
 function make_carve(src) {
     // var d = $.Deferred();
     base_image = new Image();

@@ -2,20 +2,14 @@ var canvas, stage, carve;
 var ctx, ctxcarve;
 var side;
 var drawingCanvas;
-var oldPt;
-var oldMidPt;
+var oldPt; var oldMidPt;
 var title;
-var color;
-var stroke;
-var index;
+var color; var stroke;
 var jsonColors = [];
-var savecircle = null;
-var IMG_DATA = null;
-const NUM_CARVES = 4;
-var carveCanvas = null;
-
-var CANVAS_CACHE = [];
+var savecircle;
 var currentCanvas = 1;
+const NUM_CARVES = 4;
+var CANVAS_CACHE = [];
 
 function init() {
     canvas = document.getElementById("myCanvas");
@@ -33,7 +27,6 @@ function init() {
     ctx.canvas.height = side;
     ctx.canvas.width = side;
 
-    index = 0;
     colors = ["#B03060", "#FE9A76", "#FFD700", "#32CD32", "#016936", "#008080", "#0E6EB8", "#EE82EE", "#B413EC", "#FF1493", "#A52A2A", "#A0A0A0", "#f2f2f2", "#000000"];
 
     color = colors[0];

@@ -46,7 +46,7 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve("carve"+currentCanvas+".png");
+    make_carve("img"+currentCanvas+".png", " ");
     make_palette();
     make_bgPicker();
 
@@ -60,16 +60,17 @@ function handleCanvasSwitch(event) {
     // $('#img' + currentCanvas).attr("src", canvas.toDataURL());
 
     // update current canvas to point to chosen canvas
+    carveImageSrc = $(this).attr('id') + ".png";
     currentCanvas = $(this).attr('id').slice(-1);
-    var src = $(this).attr('src');
+    var dataURL = $(this).attr('src');
 
     if (CANVAS_CACHE[currentCanvas] == null) {
         clearBoard();
-        make_carve(src);
+        make_carve(carveImageSrc);
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctxcarve.clearRect(0, 0, carve.width, carve.height);
-        make_carve(src);
+        make_carve(carveImageSrc);
         ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
 }
@@ -201,7 +202,7 @@ function make_palette() {
 
 // create carved canvas to cover artwork
 // src can be url of image or dataURL of canvas
-function make_carve(src) {
+function make_carve(carveImageSrc) {
     // var d = $.Deferred();
     base_image = new Image();
     carve.width = carve.height = side;
@@ -210,7 +211,9 @@ function make_carve(src) {
         ctxcarve.drawImage(base_image, 0, 0, side, side);
         ctxcarve.fill();
     }
-    base_image.src = src;
+    base_image.src = carveImageSrc;
+
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // setTimeout(function() {
     //     d.resolve();
@@ -227,7 +230,7 @@ function make_bgPicker() {
     // var d = $.Deferred();
     var src;
     for (var i = 0; i < NUM_CARVES; i++) {
-        src = "carve" + i + ".png";
+        src = "img" + i + ".png";
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
     }

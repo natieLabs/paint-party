@@ -160,41 +160,44 @@ function make_palette() {
             .style("stroke-width", 4);
     });
 
-    var savebutton = svgContainer.append("g").attr("id", "save")
+    var controls = d3.select("#controlsWrapper").append("svg").attr("id", "controls");
+
+    var savebutton = controls.append("g").attr("id", "save")
                                  .attr("style", "cursor: pointer")
                                  .on("click", save_img);
 
     savecircle = savebutton.append("circle")
-        .attr("cx", function(d) {return colors.length % 2 * 45 + 40 })
-        .attr("cy", function(d) {return ~~(colors.length / 2) * 45 + 40 })
+        .attr("cx", function(d) {return 40 })
+        .attr("cy", function(d) {return 60 })
         .attr("r", function(d) {return 18 })
-        .style("fill", "none")
-        .style("stroke", "#0d0d0d")
-        .style("stroke-width", 4);
+        .style("fill", "#CCCCCC")
+        // .style("stroke-width", 4);
 
     savebutton.append("text").attr('font-family', 'FontAwesome')
-        .attr("x", colors.length % 2 * 45 + 40)
-        .attr("y", ~~(colors.length / 2) * 45 + 40)
+        .attr("x", 40)
+        .attr("y", 60)
+        .attr("fill", "white")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '20px')
         .text(function(d) {return '\uf063'});
 
-    var sharebutton = svgContainer.append("g").attr("id", "share")
+    var sharebutton = controls.append("g").attr("id", "share")
                                   .attr("style", "cursor: pointer")
                                   .on("click", share_page);
 
     sharecircle = sharebutton.append("circle")
-        .attr("cx", function(d) {return (colors.length % 2+1) * 45 + 40 })
-        .attr("cy", function(d) {return ~~(colors.length / 2) * 45 + 40 })
+        .attr("cx", function(d) {return  85 })
+        .attr("cy", function(d) {return 60 })
         .attr("r", function(d) {return 18 })
-        .style("fill", "none")
-        .style("stroke", "#0d0d0d")
-        .style("stroke-width", 4);
+        .style("fill", "#CCCCCC")
+        // .style("stroke", "#0d0d0d")
+        // .style("stroke-width", 4);
 
     sharebutton.append("text").attr('font-family', 'FontAwesome')
-        .attr("x", (colors.length % 2+1) * 45 + 40)
-        .attr("y", ~~(colors.length / 2) * 45 + 40)
+        .attr("x", 85)
+        .attr("y", 60)
+        .attr("fill", "white")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '20px')

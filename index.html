@@ -80,22 +80,31 @@ body {
   pointer-events: none;
 }
 
-#paletteWrapper {
+#paletteWrapper,
+#controlsWrapper {
   position: absolute;
   z-index: 200;
   top: 0;
   bottom: 0;
-  margin-left: 2%;
+  height: 120px;
+  width: 400px;
+}
+
+#paletteWrapper {
   float: left;
+  margin-left: 2%;
+}
+
+#controlsWrapper {
+  float: right;
+  right:0;
+}
+
+#palette,
+#controls {
   height: 120px;
   width: 400px;
 }
-
-#palette {
-  height: 120px;
-  width: 400px;
-}
-
 
 #bgPicker {
   position: absolute;
@@ -111,8 +120,8 @@ body {
 }
 
 #bgPicker img {
-  max-height: 100%;
-  border:5px solid white;
+  max-height: 80%;
+  border: 5px solid white;
   margin: 5px;
 }
 
@@ -138,9 +147,10 @@ body {
   <canvas id="myCanvas"></canvas>
   <canvas id="carveout"></canvas>
   <div class="footer">
-  <div id="paletteWrapper"></div>
+    <div id="paletteWrapper"></div>
+    <div id="controlsWrapper"></div>
     <div id="bgPicker"></div>
-      <!-- <div id="blank"></div> -->
+    <!-- <div id="blank"></div> -->
   </div>
 </body>
 

@@ -10,6 +10,7 @@ var savecircle;
 var currentCanvas = 1;
 const NUM_CARVES = 4;
 var CANVAS_CACHE = [];
+var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
 function init() {
     canvas = document.getElementById("myCanvas");
@@ -19,15 +20,13 @@ function init() {
     ctxcarve = carve.getContext("2d");
 
     var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight || e.clientHeight || g.clientHeight;
+    var h = window.innerHeight-150 || e.clientHeight-150 || g.clientHeight-150;
     side = Math.min(w, h);
 
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
 
     ctx.canvas.height = side;
     ctx.canvas.width = side;
-
-    colors = ["#B03060", "#FE9A76", "#FFD700", "#32CD32", "#016936", "#008080", "#0E6EB8", "#EE82EE", "#B413EC", "#FF1493", "#A52A2A", "#A0A0A0", "#f2f2f2", "#000000"];
 
     color = colors[0];
 
@@ -124,10 +123,7 @@ function make_palette() {
             "color": colors[i]
         })
     }
-    var svgContainer = d3.select("body").append("svg")
-        .attr("width", 200)
-        .attr("height", 400)
-        .attr("id", "palette");
+    var svgContainer = d3.select("#paletteWrapper").append("svg").attr("id", "palette");
 
     var circles = svgContainer.selectAll("circle")
         .data(jsonColors)
@@ -135,8 +131,14 @@ function make_palette() {
         .append("circle");
 
     var circleAttributes = circles
-        .attr("cx", function(d) {return d.i % 2 * 45 + 40 })
-        .attr("cy", function(d) {return ~~(d.i / 2) * 45 + 40 })
+        .attr("cx", function(d) {
+            if (d.i < colors.length/2) {
+              return d.i * 45 + 40
+            } else {
+              return (d.i-colors.length/2) * 45 + 60
+            }
+        })
+        .attr("cy", function(d) {return ~~(d.i / (colors.length/2)) * 45 + 40 })
         .attr("r", function(d) {return 18 })
         .style("fill", function(d) {return d.color; })
         .filter(function(d) {return d.i == 0 })

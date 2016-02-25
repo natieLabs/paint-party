@@ -6,123 +6,150 @@
 <!--<![endif]-->
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="scripts/canvas-toBlob.js"></script>
-    <script src="scripts/FileSaver.min.js"></script>
-    <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <title>paint natie</title>
-    <script src="scripts/easeljs-NEXT.combined.js"></script>
-
-    <script src="scripts/script.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="scripts/canvas-toBlob.js"></script>
+  <script src="scripts/FileSaver.min.js"></script>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="scripts/simplegrid.css">
+  <title>paint natie</title>
+  <script src="scripts/easeljs-NEXT.combined.js"></script>
+  <script src="scripts/script.js"></script>
 </head>
 <style>
 canvas {
-    display: block;
-    vertical-align: middle;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+  display: block;
+  vertical-align: middle;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
 body {
-    background: #f2f2f2;
-    -khtml-user-select: none;
-    -o-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    overflow: hidden;
+  background: #f2f2f2;
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
 }
 
 #undefined {
-    padding: 40px;
-    top: 50%;
-    left: 50%;
+  padding: 40px;
+  top: 50%;
+  left: 50%;
 }
 
 .content {
-    vertical-align: middle;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
 #carve {
-    display: hidden;
-    vertical-align: middle;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    pointer-events: none;
+  display: hidden;
+  vertical-align: middle;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  pointer-events: none;
 }
 
 #carveout {
-    vertical-align: middle;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    pointer-events: none;
+  vertical-align: middle;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  pointer-events: none;
+}
+
+#paletteWrapper {
+  position: absolute;
+  z-index: 200;
+  top: 0;
+  bottom: 0;
+  margin-left: 2%;
+  float: left;
+  height: 120px;
+  width: 400px;
 }
 
 #palette {
-    z-index: 50;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+  height: 120px;
+  width: 400px;
 }
+
 
 #bgPicker {
-    z-index: 50;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    width: 5%;
-    background-color: rgba(0, 0, 0, .2);
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 0 auto;
+  /*width: 5%;*/
+  display: inline-block;
+  height: 150px;
+  /*background-color: transparent;*/
 }
 
-#bgPicker > img {
-    max-width: 100%;
-    max-height: 100%;
+#bgPicker img {
+  max-height: 100%;
+  /*display: inline-block;*/
+  /*float: center;
+  /*vertical-align: top;*/
+  /*margin:0 auto;*/
+  /*text-align: center;*/
 }
 
 #blank {
-    width: 100%;
-    background-color: white;
+  width: 100%;
+  background-color: white;
+}
+
+.footer {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 150px;
+  z-index: 20;
+  position: absolute;
+  text-align: center;
 }
 </style>
-
 <html lang="en">
 
 <body onload="init();">
-    <div class="content">
-        <div class="logo-wrap">
-            <div id='undefined'></div>
-        </div>
+  <div class="content">
+    <div class="logo-wrap">
+      <div id='undefined'></div>
     </div>
-    <canvas id="myCanvas"></canvas>
-    <canvas id="carveout"></canvas>
-    <div id="bgPicker">
-        <!-- <div id="blank"></div> -->
-    </div>
+  </div>
+  <canvas id="myCanvas"></canvas>
+  <canvas id="carveout"></canvas>
+  <div class="footer">
+  <div id="paletteWrapper"></div>
+    <div id="bgPicker"></div>
+      <!-- <div id="blank"></div> -->
+  </div>
 </body>
 
 </html>

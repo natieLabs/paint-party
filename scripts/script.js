@@ -146,13 +146,14 @@ function make_palette() {
 
     // stroke the circle that represents the eraser so it's visible against background
     circles.filter(function(d) {return d.color == "#f2f2f2"})
-        .style("stroke", "#0d0d0d").style("stroke-width", 4)
+        .style("stroke", "white").style("stroke-width", 4)
 
     circles.on('click', function(d) {
         color = d.color;
-        circles.transition().attr("r", 18).filter(function(d) {
-            return d.color != "#f2f2f2"
-        }).style("stroke", "none");
+        circles.transition().attr("r", 18).style("stroke", function(d){
+          return ((d.color=="#f2f2f2") ? "white" : "none")
+        });
+
         d3.select(this).transition().attr("r", 23)
             .transition().attr("r", 18)
             .style("stroke", "#0d0d0d")

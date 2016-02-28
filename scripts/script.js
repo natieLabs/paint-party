@@ -8,7 +8,7 @@ var color; var stroke;
 var jsonColors = [];
 var savecircle;
 var currentCanvas = 1;
-const NUM_CARVES = 4;
+const NUM_CARVES = 5;
 var CANVAS_CACHE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 

@@ -8,7 +8,7 @@ var color; var stroke;
 var jsonColors = [];
 var savecircle;
 var currentCanvas = 1;
-const NUM_CARVES = 5;
+const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
@@ -231,6 +231,10 @@ function clearBoard() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
 }
+
+var imgdb = [{ "name" : "emojis",   "count" : 2 },
+             { "name" : "emojis",   "count" : 2 },
+             ]
 
 function make_bgPicker() {
     // var d = $.Deferred();

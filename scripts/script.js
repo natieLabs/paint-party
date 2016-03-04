@@ -133,13 +133,13 @@ function make_palette() {
     var circleAttributes = circles
         .attr("cx", function(d) {
             if (d.i < colors.length/2) {
-              return d.i * 45 + 40
+              return (d.i * 12 + 16) + "%";
             } else {
-              return (d.i-colors.length/2) * 45 + 60
+              return ((d.i-colors.length/2) * 12 + 20) + "%";
             }
         })
-        .attr("cy", function(d) {return ~~(d.i / (colors.length/2)) * 45 + 40 })
-        .attr("r", function(d) {return 18 })
+        .attr("cy", function(d) {return (~~(d.i / (colors.length/2)) * 40 + 15) + "%"})
+        .attr("r", function(d) {return "6%" })
         .style("fill", function(d) {return d.color; })
         .filter(function(d) {return d.i == 0 })
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
@@ -150,12 +150,12 @@ function make_palette() {
 
     circles.on('click', function(d) {
         color = d.color;
-        circles.transition().attr("r", 18).style("stroke", function(d){
+        circles.transition().attr("r", "6%").style("stroke", function(d){
           return ((d.color=="#f2f2f2") ? "white" : "none")
         });
 
-        d3.select(this).transition().attr("r", 23)
-            .transition().attr("r", 18)
+        d3.select(this).transition().attr("r", "7%")
+            .transition().attr("r", "6%")
             .style("stroke", "#0d0d0d")
             .style("stroke-width", 4);
     });
@@ -167,19 +167,19 @@ function make_palette() {
                                  .on("click", save_img);
 
     savecircle = savebutton.append("circle")
-        .attr("cx", function(d) {return 40 })
-        .attr("cy", function(d) {return 60 })
-        .attr("r", function(d) {return 18 })
+        .attr("cx", function(d) {return "5%" })
+        .attr("cy", function(d) {return "25%" })
+        .attr("r", function(d) {return "6%" })
         .style("fill", "#CCCCCC")
         // .style("stroke-width", 4);
 
     savebutton.append("text").attr('font-family', 'FontAwesome')
-        .attr("x", 40)
-        .attr("y", 60)
+        .attr("x", "5%")
+        .attr("y", "25%")
         .attr("fill", "white")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
-        .attr('font-size', '20px')
+        .attr('font-size', '2vmin')
         .text(function(d) {return '\uf063'});
 
     var sharebutton = controls.append("g").attr("id", "share")
@@ -187,20 +187,20 @@ function make_palette() {
                                   .on("click", share_page);
 
     sharecircle = sharebutton.append("circle")
-        .attr("cx", function(d) {return  85 })
-        .attr("cy", function(d) {return 60 })
-        .attr("r", function(d) {return 18 })
+        .attr("cx", function(d) {return  "18%" })
+        .attr("cy", function(d) {return "25%" })
+        .attr("r", function(d) {return "6%"})
         .style("fill", "#CCCCCC")
         // .style("stroke", "#0d0d0d")
         // .style("stroke-width", 4);
 
     sharebutton.append("text").attr('font-family', 'FontAwesome')
-        .attr("x", 85)
-        .attr("y", 60)
+        .attr("x", "18%")
+        .attr("y", "25%")
         .attr("fill", "white")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
-        .attr('font-size', '20px')
+        .attr('font-size', '2vmin')
         .text(function(d) {
             return '\uf09a'
         });

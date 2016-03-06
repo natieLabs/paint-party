@@ -72,6 +72,11 @@ body {
     width: 20vw;
 }
 
+/*#controls {
+    display: table-cell;
+    vertical-align: middle;
+}
+*/
 #bgPicker {
     z-index: 10;
 }
@@ -128,13 +133,12 @@ body {
         <div class="ui grid">
             <div class="six column row">
                 <div class="left floated column">
-                    <a href="http://natie.com"><img src="logo.png" class="logo"></img>
+                    <a href="http://natie.com">
+                        <img src="logo.png" class="logo"></img>
                     </a>
                 </div>
                 <div class="right floated column">
-                    <div class="pageLink">
-                        NATIE/LABS/WORDS
-                    </div>
+                    <div class="pageLink"> NATIE/LABS/WORDS </div>
                 </div>
             </div>
         </div>
@@ -145,9 +149,7 @@ body {
         <div class="ui grid">
             <div class="sixteen column row">
                 <div class="four wide column" id="paletteWrapper"></div>
-                <div class="eight wide column" id="bgPicker">
-                </div>
-                <!-- <div class="five wide column"></div> -->
+                <div class="eight wide column" id="bgPicker"></div>
                 <div id="controlsWrapper" class="four wide column">
                     <div class="controls">
                         <button class="circular ui icon button" id="save">
@@ -160,9 +162,6 @@ body {
                 </div>
             </div>
         </div>
-        <!-- <div id="paletteWrapper"></div>
-        <div id="bgPicker"></div> -->
-        <!-- <div id="blank"></div> -->
     </div>
 </body>
 

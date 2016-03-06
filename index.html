@@ -75,22 +75,19 @@ body {
 }
 
 #bgPicker {
-    /*position: absolute;*/
     z-index: 10;
-    /*left: 10vw;*/
-    /*top: 5vh;*/
-    /*right: 10vw;*/
-    /*margin: auto;*/
-    /*width: 5%;*/
-    /*display: inline-block;*/
-    /*height: 10vh;*/
-    /*width: 75vw;*/
 }
 
 #bgPicker img {
     max-height: 8vh;
     border: 5px solid white;
     margin: 5px;
+    top: 50%;
+    transform: translateY(50%);
+    -ms-transform: translateY(50%);
+    -moz-transform: translateY(50%);
+    -webkit-transform: translateY(50%);
+    -o-transform: translateY(50%);
 }
 
 .header {
@@ -112,7 +109,7 @@ body {
 }
 
 .pageLink {
-  text-align: right;
+    text-align: right;
     margin-right: 2vw;
     padding-top: 2vh;
     font-family: "futura-extrabold", futura-pt, 'Futura Std', Futura, Arial, sans-serif;
@@ -133,7 +130,8 @@ body {
         <div class="ui grid">
             <div class="six column row">
                 <div class="left floated column">
-                    <a href="http://natie.com"><img src="logo.png" class="logo"></img> </a>
+                    <a href="http://natie.com"><img src="logo.png" class="logo"></img>
+                    </a>
                 </div>
                 <div class="right floated column">
                     <div class="pageLink">

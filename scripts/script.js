@@ -14,6 +14,37 @@ const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
+var imgdb = [{
+    "index": 0,
+    "src": "img0.png",
+    "dataURL": ""
+}, {
+    "index": 1,
+    "src": "img1.png",
+    "dataURL": ""
+}, {
+    "index": 2,
+    "src": "img2.png",
+    "dataURL": ""
+
+}, {
+    "index": 3,
+    "src": "img3.png",
+    "dataURL": ""
+}, {
+    "index": 4,
+    "src": "img4.png",
+    "dataURL": ""
+}, {
+    "index": 5,
+    "src": "img5.png",
+    "dataURL": ""
+}, {
+    "index": 6,
+    "src": "img6.png",
+    "dataURL": ""
+}]
+
 function init() {
     canvas = document.getElementById("myCanvas");
     ctx = canvas.getContext('2d');
@@ -61,8 +92,10 @@ function handleCanvasSwitch(event) {
     // $('#img' + currentCanvas).attr("src", canvas.toDataURL());
 
     // update current canvas to point to chosen canvas
-    carveImageSrc = $(this).attr('id') + ".png";
     currentCanvas = $(this).attr('id').slice(-1);
+    // carveImageSrc = $(this).attr('id') + ".png";
+    carveImageSrc = imgdb[currentCanvas].src;
+    
     var dataURL = $(this).attr('src');
 
     if (CANVAS_CACHE[currentCanvas] == null) {
@@ -210,11 +243,14 @@ function make_palette() {
 
     sharecircle = sharebutton.append("circle")
         .attr("cx", function(d) {
-            return "18%" })
+            return "18%"
+        })
         .attr("cy", function(d) {
-            return "25%" })
+            return "25%"
+        })
         .attr("r", function(d) {
-            return "6%" })
+            return "6%"
+        })
         .style("fill", "#CCCCCC")
         // .style("stroke", "#0d0d0d")
         // .style("stroke-width", 4);
@@ -257,15 +293,11 @@ function clearBoard() {
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
 }
 
-var imgdb = [{ "name": "emojis", "count": 2 },
-    { "name": "emojis", "count": 2 },
-]
-
 function make_bgPicker() {
     // var d = $.Deferred();
     var src;
-    for (var i = 0; i < NUM_CARVES; i++) {
-        src = "img" + i + ".png";
+    for (var i = 0; i < imgdb.length; i++) {
+        src = imgdb[i].src;
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
     }

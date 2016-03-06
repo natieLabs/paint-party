@@ -70,7 +70,7 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve(currentCanvas, "img" + currentCanvas + ".png", " ");
+    make_carve(currentCanvas, imgdb[currentCanvas].src, " ");
     make_palette();
     make_bgPicker();
 
@@ -195,51 +195,8 @@ function make_palette() {
             .style("stroke-width", 4);
     });
 
-    var controls = d3.select("#controlsWrapper").append("svg").attr("id", "controls");
-
-    var savebutton = controls.append("g").attr("id", "save")
-        .attr("style", "cursor: pointer")
-        .on("click", save_img);
-
-    savecircle = savebutton.append("circle")
-        .attr("cx", function(d) {
-            return "5%"
-        })
-        .attr("cy", function(d) {
-            return "25%"
-        })
-        .style("fill", "#CCCCCC");
-
-    savebutton.append("text")
-        .attr("x", "5%")
-        .attr("y", "25%").text(function(d) {
-            return '\uf063'
-        });
-
-    var sharebutton = controls.append("g").attr("id", "share")
-        .attr("style", "cursor: pointer")
-        .on("click", share_page);
-
-    sharecircle = sharebutton.append("circle")
-        .attr("cx", function(d) {
-            return "18%"
-        })
-        .attr("cy", function(d) {
-            return "25%"
-        })
-        .style("fill", "#CCCCCC");
-
-    sharebutton.append("text")
-        .attr("x", "18%")
-        .attr("y", "25%").text(function(d) {
-            return '\uf09a'
-        });
-
-    d3.selectAll("text").attr('font-family', 'FontAwesome')
-        .attr("fill", "white")
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'central')
-        .attr('font-size', '2vmin');
+    $("#save").on("click", save_img);
+    $("#share").on("click", share_page);
 
     d3.selectAll("circle").attr("r", function(d) {
         return "6%"
@@ -306,10 +263,7 @@ function resize(previous) {
     var h = window.innerHeight * 0.8 || e.clientHeight * 0.8 || g.clientHeight * 0.8;
     side = Math.min(w, h);
 
-    // $("#myCanvas")[0].attr("width", width).attr("height", height);
-
     scale = side / previous;
-
 
     CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
 

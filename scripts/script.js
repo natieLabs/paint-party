@@ -22,7 +22,7 @@ function init() {
     ctxcarve = carve.getContext("2d");
 
     var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight - 150 || e.clientHeight - 150 || g.clientHeight - 150;
+    var h = window.innerHeight *0.8 || e.clientHeight *0.8 || g.clientHeight *0.8;
     side = Math.min(w, h);
 
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
@@ -47,7 +47,7 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve("img" + currentCanvas + ".png", " ");
+    make_carve(currentCanvas, "img" + currentCanvas + ".png", " ");
     make_palette();
     make_bgPicker();
 
@@ -67,11 +67,11 @@ function handleCanvasSwitch(event) {
 
     if (CANVAS_CACHE[currentCanvas] == null) {
         clearBoard();
-        make_carve(carveImageSrc);
+        make_carve(currentCanvas, carveImageSrc);
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctxcarve.clearRect(0, 0, carve.width, carve.height);
-        make_carve(carveImageSrc);
+        make_carve(currentCanvas, carveImageSrc);
         ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
 }
@@ -224,7 +224,7 @@ function make_palette() {
 
 // create carved canvas to cover artwork
 // src can be url of image or dataURL of canvas
-function make_carve(carveImageSrc) {
+function make_carve(i, carveImageSrc) {
     // var d = $.Deferred();
     base_image = new Image();
     carve.width = carve.height = side;

@@ -78,7 +78,6 @@ body {
 #bgPicker {
     /*position: absolute;*/
     z-index: 10;
-
     /*left: 10vw;*/
     /*top: 5vh;*/
     /*right: 10vw;*/
@@ -108,19 +107,18 @@ body {
 }
 
 .logo {
-    width: 75px;
+    width: 5vw;
     padding: 20px;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 .pageLink {
-    padding-right: 2vw;
+  text-align: right;
+    margin-right: 2vw;
     padding-top: 2vh;
-    right: 0;
-    top: 0;
     font-family: "futura-extrabold", futura-pt, 'Futura Std', Futura, Arial, sans-serif;
     color: black;
-    position: absolute;
+    /*position: absolute;*/
     font-size: 2vmin;
 }
 
@@ -133,10 +131,17 @@ body {
 
 <body onload="init();">
     <div class="header">
-        <a href="http://natie.com"><img src="logo.png" class="logo"></img>
-        </a>
-        <div class="pageLink">
-            NATIE/LABS/WORDS
+        <div class="ui grid">
+            <div class="six column row">
+                <div class="left floated column">
+                    <a href="http://natie.com"><img src="logo.png" class="logo"></img> </a>
+                </div>
+                <div class="right floated column">
+                    <div class="pageLink">
+                        NATIE/LABS/WORDS
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <canvas id="myCanvas"></canvas>

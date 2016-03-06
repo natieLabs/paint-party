@@ -2,9 +2,11 @@ var canvas, stage, carve;
 var ctx, ctxcarve;
 var side;
 var drawingCanvas;
-var oldPt; var oldMidPt;
+var oldPt;
+var oldMidPt;
 var title;
-var color; var stroke;
+var color;
+var stroke;
 var jsonColors = [];
 var savecircle;
 var currentCanvas = 1;
@@ -20,7 +22,7 @@ function init() {
     ctxcarve = carve.getContext("2d");
 
     var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight-150 || e.clientHeight-150 || g.clientHeight-150;
+    var h = window.innerHeight - 150 || e.clientHeight - 150 || g.clientHeight - 150;
     side = Math.min(w, h);
 
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
@@ -45,7 +47,7 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve("img"+currentCanvas+".png", " ");
+    make_carve("img" + currentCanvas + ".png", " ");
     make_palette();
     make_bgPicker();
 
@@ -132,29 +134,36 @@ function make_palette() {
 
     var circleAttributes = circles
         .attr("cx", function(d) {
-            if (d.i < colors.length/2) {
-              return (d.i * 12 + 16) + "%";
+            if (d.i < colors.length / 2) {
+                return (d.i * 12 + 16) + "%";
             } else {
-              return ((d.i-colors.length/2) * 12 + 20) + "%";
+                return ((d.i - colors.length / 2) * 12 + 22) + "%";
             }
         })
-        .attr("cy", function(d) {return (~~(d.i / (colors.length/2)) * 40 + 15) + "%"})
-        .attr("r", function(d) {return "6%" })
-        .style("fill", function(d) {return d.color; })
-        .filter(function(d) {return d.i == 0 })
+        .attr("cy", function(d) {
+          var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
+          console.log(cy);
+            return  cy})
+        .attr("r", function(d) {
+            return "6%" })
+        .style("fill", function(d) {
+            return d.color; })
+        .filter(function(d) {
+            return d.i == 0 })
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
     // stroke the circle that represents the eraser so it's visible against background
-    circles.filter(function(d) {return d.color == "#f2f2f2"})
+    circles.filter(function(d) {
+            return d.color == "#f2f2f2" })
         .style("stroke", "white").style("stroke-width", 4)
 
     circles.on('click', function(d) {
         color = d.color;
-        circles.transition().attr("r", "6%").style("stroke", function(d){
-          return ((d.color=="#f2f2f2") ? "white" : "none")
+        circles.transition().attr("r", "6%").style("stroke", function(d) {
+            return ((d.color == "#f2f2f2") ? "white" : "none")
         });
 
-        d3.select(this).transition().attr("r", "7%")
+        d3.select(this).transition().attr("r", "8%")
             .transition().attr("r", "6%")
             .style("stroke", "#0d0d0d")
             .style("stroke-width", 4);
@@ -163,13 +172,16 @@ function make_palette() {
     var controls = d3.select("#controlsWrapper").append("svg").attr("id", "controls");
 
     var savebutton = controls.append("g").attr("id", "save")
-                                 .attr("style", "cursor: pointer")
-                                 .on("click", save_img);
+        .attr("style", "cursor: pointer")
+        .on("click", save_img);
 
     savecircle = savebutton.append("circle")
-        .attr("cx", function(d) {return "5%" })
-        .attr("cy", function(d) {return "25%" })
-        .attr("r", function(d) {return "6%" })
+        .attr("cx", function(d) {
+            return "5%" })
+        .attr("cy", function(d) {
+            return "25%" })
+        .attr("r", function(d) {
+            return "6%" })
         .style("fill", "#CCCCCC")
         // .style("stroke-width", 4);
 
@@ -180,16 +192,20 @@ function make_palette() {
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '2vmin')
-        .text(function(d) {return '\uf063'});
+        .text(function(d) {
+            return '\uf063' });
 
     var sharebutton = controls.append("g").attr("id", "share")
-                                  .attr("style", "cursor: pointer")
-                                  .on("click", share_page);
+        .attr("style", "cursor: pointer")
+        .on("click", share_page);
 
     sharecircle = sharebutton.append("circle")
-        .attr("cx", function(d) {return  "18%" })
-        .attr("cy", function(d) {return "25%" })
-        .attr("r", function(d) {return "6%"})
+        .attr("cx", function(d) {
+            return "18%" })
+        .attr("cy", function(d) {
+            return "25%" })
+        .attr("r", function(d) {
+            return "6%" })
         .style("fill", "#CCCCCC")
         // .style("stroke", "#0d0d0d")
         // .style("stroke-width", 4);
@@ -232,9 +248,9 @@ function clearBoard() {
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
 }
 
-var imgdb = [{ "name" : "emojis",   "count" : 2 },
-             { "name" : "emojis",   "count" : 2 },
-             ]
+var imgdb = [{ "name": "emojis", "count": 2 },
+    { "name": "emojis", "count": 2 },
+]
 
 function make_bgPicker() {
     // var d = $.Deferred();
@@ -259,10 +275,10 @@ function save_img() {
     });
 }
 
-function share_page(){
+function share_page() {
 
-  var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=http://anniejiao.me/paintnatie/", "pop", "width=600, height=400, scrollbars=no");
-  return false;
+    var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=http://anniejiao.me/paintnatie/", "pop", "width=600, height=400, scrollbars=no");
+    return false;
 }
 
 function cloneCanvas(oldCanvas) {

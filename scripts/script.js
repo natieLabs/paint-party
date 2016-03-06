@@ -16,33 +16,25 @@ var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", 
 
 var imgdb = [{
     "index": 0,
-    "src": "img0.png",
-    "dataURL": ""
+    "src": "img0.png"
 }, {
     "index": 1,
-    "src": "img1.png",
-    "dataURL": ""
+    "src": "img1.png"
 }, {
     "index": 2,
-    "src": "img2.png",
-    "dataURL": ""
-
+    "src": "img2.png"
 }, {
     "index": 3,
-    "src": "img3.png",
-    "dataURL": ""
+    "src": "img3.png"
 }, {
     "index": 4,
-    "src": "img4.png",
-    "dataURL": ""
+    "src": "img4.png"
 }, {
     "index": 5,
-    "src": "img5.png",
-    "dataURL": ""
+    "src": "img5.png"
 }, {
     "index": 6,
-    "src": "img6.png",
-    "dataURL": ""
+    "src": "img6.png"
 }]
 
 function init() {
@@ -95,7 +87,7 @@ function handleCanvasSwitch(event) {
     currentCanvas = $(this).attr('id').slice(-1);
     // carveImageSrc = $(this).attr('id') + ".png";
     carveImageSrc = imgdb[currentCanvas].src;
-    
+
     var dataURL = $(this).attr('src');
 
     if (CANVAS_CACHE[currentCanvas] == null) {
@@ -175,11 +167,7 @@ function make_palette() {
         })
         .attr("cy", function(d) {
             var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
-            console.log(cy);
             return cy
-        })
-        .attr("r", function(d) {
-            return "6%"
         })
         .style("fill", function(d) {
             return d.color;
@@ -220,20 +208,11 @@ function make_palette() {
         .attr("cy", function(d) {
             return "25%"
         })
-        .attr("r", function(d) {
-            return "6%"
-        })
-        .style("fill", "#CCCCCC")
-        // .style("stroke-width", 4);
+        .style("fill", "#CCCCCC");
 
-    savebutton.append("text").attr('font-family', 'FontAwesome')
+    savebutton.append("text")
         .attr("x", "5%")
-        .attr("y", "25%")
-        .attr("fill", "white")
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'central')
-        .attr('font-size', '2vmin')
-        .text(function(d) {
+        .attr("y", "25%").text(function(d) {
             return '\uf063'
         });
 
@@ -248,29 +227,28 @@ function make_palette() {
         .attr("cy", function(d) {
             return "25%"
         })
-        .attr("r", function(d) {
-            return "6%"
-        })
-        .style("fill", "#CCCCCC")
-        // .style("stroke", "#0d0d0d")
-        // .style("stroke-width", 4);
+        .style("fill", "#CCCCCC");
 
-    sharebutton.append("text").attr('font-family', 'FontAwesome')
+    sharebutton.append("text")
         .attr("x", "18%")
-        .attr("y", "25%")
+        .attr("y", "25%").text(function(d) {
+            return '\uf09a'
+        });
+
+    d3.selectAll("text").attr('font-family', 'FontAwesome')
         .attr("fill", "white")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
-        .attr('font-size', '2vmin')
-        .text(function(d) {
-            return '\uf09a'
-        });
+        .attr('font-size', '2vmin');
+
+    d3.selectAll("circle").attr("r", function(d) {
+        return "6%"
+    });
 }
 
 // create carved canvas to cover artwork
 // src can be url of image or dataURL of canvas
 function make_carve(i, carveImageSrc) {
-    // var d = $.Deferred();
     base_image = new Image();
     carve.width = carve.height = side;
 
@@ -279,13 +257,6 @@ function make_carve(i, carveImageSrc) {
         ctxcarve.fill();
     }
     base_image.src = carveImageSrc;
-
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // setTimeout(function() {
-    //     d.resolve();
-    // }, 500);
-    // return d;
 }
 
 function clearBoard() {
@@ -294,18 +265,12 @@ function clearBoard() {
 }
 
 function make_bgPicker() {
-    // var d = $.Deferred();
     var src;
     for (var i = 0; i < imgdb.length; i++) {
         src = imgdb[i].src;
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
     }
-    // setTimeout(function() {
-    //     d.resolve();
-    // }, 100);
-
-    // return d;
 }
 
 function save_img() {
@@ -334,3 +299,26 @@ function cloneCanvas(oldCanvas) {
 
     return newCanvas;
 }
+
+function resize(previous) {
+
+    var w = window.innerWidth || e.clientWidth || g.clientWidth;
+    var h = window.innerHeight * 0.8 || e.clientHeight * 0.8 || g.clientHeight * 0.8;
+    side = Math.min(w, h);
+
+    // $("#myCanvas")[0].attr("width", width).attr("height", height);
+
+    scale = side / previous;
+
+
+    CANVAS_CACHE[currentCanvas] = cloneCanvas(canvas);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctxcarve.clearRect(0, 0, carve.width, carve.height);
+    ctx.canvas.height = side;
+    ctx.canvas.width = side;
+    make_carve(currentCanvas, imgdb[currentCanvas].src);
+    ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
+
+}
+window.onresize = resize;

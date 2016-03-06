@@ -22,7 +22,7 @@ function init() {
     ctxcarve = carve.getContext("2d");
 
     var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight *0.8 || e.clientHeight *0.8 || g.clientHeight *0.8;
+    var h = window.innerHeight * 0.8 || e.clientHeight * 0.8 || g.clientHeight * 0.8;
     side = Math.min(w, h);
 
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
@@ -141,20 +141,25 @@ function make_palette() {
             }
         })
         .attr("cy", function(d) {
-          var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
-          console.log(cy);
-            return  cy})
+            var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
+            console.log(cy);
+            return cy
+        })
         .attr("r", function(d) {
-            return "6%" })
+            return "6%"
+        })
         .style("fill", function(d) {
-            return d.color; })
+            return d.color;
+        })
         .filter(function(d) {
-            return d.i == 0 })
+            return d.i == 0
+        })
         .style("stroke", "#0d0d0d").style("stroke-width", 4)
 
     // stroke the circle that represents the eraser so it's visible against background
     circles.filter(function(d) {
-            return d.color == "#f2f2f2" })
+            return d.color == "#f2f2f2"
+        })
         .style("stroke", "white").style("stroke-width", 4)
 
     circles.on('click', function(d) {
@@ -177,11 +182,14 @@ function make_palette() {
 
     savecircle = savebutton.append("circle")
         .attr("cx", function(d) {
-            return "5%" })
+            return "5%"
+        })
         .attr("cy", function(d) {
-            return "25%" })
+            return "25%"
+        })
         .attr("r", function(d) {
-            return "6%" })
+            return "6%"
+        })
         .style("fill", "#CCCCCC")
         // .style("stroke-width", 4);
 
@@ -193,7 +201,8 @@ function make_palette() {
         .attr('dominant-baseline', 'central')
         .attr('font-size', '2vmin')
         .text(function(d) {
-            return '\uf063' });
+            return '\uf063'
+        });
 
     var sharebutton = controls.append("g").attr("id", "share")
         .attr("style", "cursor: pointer")
@@ -276,7 +285,6 @@ function save_img() {
 }
 
 function share_page() {
-
     var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=http://anniejiao.me/paintnatie/", "pop", "width=600, height=400, scrollbars=no");
     return false;
 }

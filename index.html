@@ -6,151 +6,167 @@
 <!--<![endif]-->
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="scripts/canvas-toBlob.js"></script>
-  <script src="scripts/FileSaver.min.js"></script>
-  <meta charset="utf-8">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <title>paint natie</title>
-  <script src="scripts/easeljs-NEXT.combined.js"></script>
-  <script src="scripts/script.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="scripts/canvas-toBlob.js"></script>
+    <script src="scripts/FileSaver.min.js"></script>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <title>paint natie</title>
+    <script src="scripts/easeljs-NEXT.combined.js"></script>
+    <script src="scripts/script.js"></script>
 </head>
 <style>
 canvas {
-  display: block;
-  /*vertical-align: middle;*/
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 15vh;
-  margin: auto;
+    display: block;
+    /*vertical-align: middle;*/
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15vh;
+    bottom: 15vh;
+    margin: auto;
 }
 
 body {
-  background: #f2f2f2;
-  -khtml-user-select: none;
-  -o-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  overflow: hidden;
+    background: #f2f2f2;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    overflow: hidden;
 }
 
 #undefined {
-  padding: 40px;
-  top: 50%;
-  left: 50%;
+    padding: 40px;
+    top: 50%;
+    left: 50%;
 }
 
 .content {
-  vertical-align: middle;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-#carve {
-  display: hidden;
-  vertical-align: middle;
-  position: absolute;
-  left: 15vh;
-  right: 15vh;
-  top: 15vh;
-  bottom: 15vh;
-  /*margin: auto;*/
-  pointer-events: none;
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 #carveout {
-  /*vertical-align: middle;*/
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 15vh;
-  /*margin: auto;*/
-  pointer-events: none;
+    /*vertical-align: middle;*/
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15vh;
+    bottom: 15vh;
+    /*margin: auto;*/
+    pointer-events: none;
 }
 
 #paletteWrapper,
 #controlsWrapper {
-  position: absolute;
-  z-index: 200;
-  top: 0;
-  bottom: 0;
-  height: 10vh;
-  width: 10vw;
+    position: absolute;
+    z-index: 200;
+    top: 0;
+    bottom: 0;
+    height: 10vh;
+    width: 10vw;
 }
 
 #paletteWrapper {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 #controlsWrapper {
-  float: right;
-  right:0;
+    float: right;
+    right: 0;
 }
 
 #palette,
 #controls {
-  height: 15vh;
-  width: 20vw;
+    height: 15vh;
+    width: 20vw;
 }
 
 #bgPicker {
-  /*position: absolute;*/
-  z-index: 10;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: 0 auto;
-  /*width: 5%;*/
-  display: inline-block;
-  height: 20vh;
-  width: 75vw;
-  /*background-color: transparent !important;*/
+    position: absolute;
+    z-index: 10;
+    /*top:0;*/
+    left: 10vw;
+    bottom: 0;
+    right: 10vw;
+    margin: 0;
+    /*width: 5%;*/
+    display: inline-block;
+    height: 10vh;
+    width: 75vw;
+    /*background-color: transparent !important;*/
 }
 
 #bgPicker img {
-  max-height: 50%;
-  border: 5px solid white;
-  margin: 5px;
+    max-height: 8vh;
+    border: 5px solid white;
+    margin: 5px;
+}
+
+.header {
+    top: 0;
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    z-index: 25;
+}
+
+.logo {
+    width: 75px;
+    padding: 20px;
+    position: absolute;
+}
+
+.pageLink {
+    padding-right: 2vw;
+    padding-top: 4vh;
+    right: 0;
+    top: 0;
+    font-family: "futura-extrabold", futura-pt, 'Futura Std', Futura, Arial, sans-serif;
+    color: black;
+    position: absolute;
+    font-size: 2vmin;
 }
 
 .footer {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  height: 15vh;
-  z-index: 20;
-  position: absolute;
-  text-align: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 15vh;
+    z-index: 20;
+    position: absolute;
+    text-align: center;
 }
 </style>
 <html lang="en">
 
 <body onload="init();">
-  <div class="content">
-    <div class="logo-wrap">
-      <div id='undefined'></div>
+    <div class="header">
+        <a href="http://natie.com"><img src="logo.png" class="logo"></img>
+        </a>
+        <div class="pageLink">
+            NATIE/LABS/WORDS
+        </div>
     </div>
-  </div>
-  <canvas id="myCanvas"></canvas>
-  <canvas id="carveout"></canvas>
-  <div class="footer">
-    <div id="paletteWrapper"></div>
-    <div id="controlsWrapper"></div>
-    <div id="bgPicker"></div>
-    <!-- <div id="blank"></div> -->
-  </div>
+    <canvas id="myCanvas"></canvas>
+    <canvas id="carveout"></canvas>
+    <div class="footer">
+        <div id="paletteWrapper"></div>
+        <div id="controlsWrapper"></div>
+        <div id="bgPicker"></div>
+        <!-- <div id="blank"></div> -->
+    </div>
 </body>
 
 </html>

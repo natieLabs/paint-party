@@ -45,7 +45,7 @@ function init() {
     ctxcarve = carve.getContext("2d");
 
     var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight * 0.8 || e.clientHeight * 0.8 || g.clientHeight * 0.8;
+    var h = window.innerHeight * 0.7 || e.clientHeight * 0.7 || g.clientHeight * 0.7;
     side = Math.min(w, h);
 
     // $("#myCanvas")[0].attr("width", width).attr("height", height);
@@ -260,7 +260,7 @@ function cloneCanvas(oldCanvas) {
 function resize(previous) {
 
     var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight * 0.8 || e.clientHeight * 0.8 || g.clientHeight * 0.8;
+    var h = window.innerHeight * 0.7 || e.clientHeight * 0.7 || g.clientHeight * 0.7;
     side = Math.min(w, h);
 
     scale = side / previous;

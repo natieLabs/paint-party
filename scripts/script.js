@@ -14,73 +14,7 @@ const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
-var imgdb = [{
-    "index": 0,
-    "src": "img0.svg"
-}, {
-    "index": 1,
-    "src": "img1.svg"
-}, {
-    "index": 2,
-    "src": "img2.png"
-}, {
-    "index": 3,
-    "src": "img3.png"
-}, {
-    "index": 4,
-    "src": "img4.png"
-}, {
-    "index": 5,
-    "src": "img5.png"
-}, {
-    "index": 6,
-    "src": "img6.png"
-}, {
-    "index": 7,
-    "src": "dumbbells-01.svg"
-}, {
-    "index": 8,
-    "src": "music-01.svg"
-}, {
-    "index": 9,
-    "src": "hand-01.svg"
-}, {
-    "index": 10,
-    "src": "guitar-01.svg"
-}, {
-    "index": 11,
-    "src": "black-01.svg"
-}, {
-    "index": 12,
-    "src": "mic-01.svg"
-}, {
-    "index": 13,
-    "src": "headphones.svg"
-}, {
-  "index" :14,
-  "src" : "multimedia.svg"
-}, {
-  "index" :15,
-  "src" : "video-01.svg"
-},{
-  "index" : 16,
-  "src" : "backpack-01.svg"
-}, {
-  "index":17,
-  "src" : "car.svg"
-}, {
-   "index":18,
-  "src" : "boat.svg"
-} , {
-  "index": 19,
-  "src" :"zombie.svg"
-}, {
-  "index" : 20,
-  "src" :"converse.svg"
-}, {
-  "index" : 21,
-  "src" : "elephant.svg"
-}]
+var imgdb = ["img0.svg", "img1.svg", "img2.png", "img3.png", "img4.png", "img5.png", "img6.png", "dumbbells.svg", "music.svg", "hand.svg", "guitar.svg", "black.svg", "mic.svg", "headphones.svg", "multimedia.svg", "video.svg", "backpack.svg", "car.svg", "boat.svg", "zombie.svg", "converse.svg", "elephant.svg"];
 
 function init() {
     canvas = document.getElementById("myCanvas");
@@ -113,7 +47,7 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve(currentCanvas, imgdb[currentCanvas].src, " ");
+    make_carve(currentCanvas, imgdb[currentCanvas], " ");
     for (var i = 0; i < colors.length; i++) {
         jsonColors.push({
             "i": i,
@@ -135,7 +69,7 @@ function handleCanvasSwitch(event) {
     // update current canvas to point to chosen canvas
     currentCanvas = $(this).attr('id').substring(3);
     // carveImageSrc = $(this).attr('id') + ".png";
-    carveImageSrc = imgdb[currentCanvas].src;
+    carveImageSrc = imgdb[currentCanvas];
 
     var dataURL = $(this).attr('src');
 
@@ -307,7 +241,8 @@ function clearBoard() {
 function make_bgPicker() {
     var src;
     for (var i = 0; i < imgdb.length; i++) {
-        src = imgdb[i].src;
+        src = imgdb[i];
+        console.log(src)
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
     }
@@ -354,7 +289,7 @@ function resize(previous) {
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
     ctx.canvas.height = side;
     ctx.canvas.width = side;
-    make_carve(currentCanvas, imgdb[currentCanvas].src);
+    make_carve(currentCanvas, imgdb[currentCanvas]);
     ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
 
     d3.select("svg").remove();

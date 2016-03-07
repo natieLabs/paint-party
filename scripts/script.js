@@ -69,6 +69,12 @@ function init() {
     stage.update();
 
     make_carve(currentCanvas, imgdb[currentCanvas].src, " ");
+    for (var i = 0; i < colors.length; i++) {
+        jsonColors.push({
+            "i": i,
+            "color": colors[i]
+        })
+    }
     make_palette();
     make_bgPicker();
 
@@ -142,12 +148,7 @@ function handleMouseUp(event) {
 }
 
 function make_palette() {
-    for (var i = 0; i < colors.length; i++) {
-        jsonColors.push({
-            "i": i,
-            "color": colors[i]
-        })
-    }
+
     var svgContainer = d3.select("#paletteWrapper").append("svg").attr("id", "palette");
 
     var circles = svgContainer.selectAll("circle")
@@ -175,7 +176,6 @@ function make_palette() {
     var r;
 
     if (w > 1000) {
-        console.log("here")
         r = "6%";
         circles.attr("cx", function(d) {
             if (d.i < colors.length / 2) {
@@ -204,7 +204,6 @@ function make_palette() {
         var di = r * 2;
         var gutter = 5;
         var numPerRow = ~~($("#palette").width() / (di + gutter)) - 1;
-        console.log(numPerRow);
 
 
         circles.attr("cx", function(d) {
@@ -216,6 +215,7 @@ function make_palette() {
             return y * di + gutter * (y + 1) + r;
         });
         d3.select("svg").style("height", function() {
+            console.log(jsonColors.length, Math.ceil(jsonColors.length / numPerRow), Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter);
             return Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter;
         });
         circles.on('click', function(d) {

@@ -215,8 +215,7 @@ function make_palette() {
             return y * di + gutter * (y + 1) + r;
         });
         d3.select("svg").style("height", function() {
-            console.log(jsonColors.length, Math.ceil(jsonColors.length / numPerRow), Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter);
-            return Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter;
+            return (Math.floor(jsonColors.length / numPerRow)+1) * (di + gutter) + gutter;
         });
         circles.on('click', function(d) {
             color = d.color;

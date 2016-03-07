@@ -155,8 +155,6 @@ function make_palette() {
         .enter()
         .append("circle");
 
-
-
     var circleAttributes = circles
         .style("fill", function(d) {
             return d.color;
@@ -189,11 +187,22 @@ function make_palette() {
             var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
             return cy
         });
+        circles.on('click', function(d) {
+            color = d.color;
+            circles.transition().attr("r", r).style("stroke", function(d) {
+                return ((d.color == "#f2f2f2") ? "white" : "none")
+            });
+
+            d3.select(this).transition().attr("r", parseFloat(r) * 1.3 + "%")
+                .transition().attr("r", r)
+                .style("stroke", "#0d0d0d")
+                .style("stroke-width", 4);
+        });
     } else {
         // mobile mode
-        var r = 18;
+        var r = 15;
         var di = r * 2;
-        var gutter = 8;
+        var gutter = 5;
         var numPerRow = ~~($("#palette").width() / (di + gutter)) - 1;
         console.log(numPerRow);
 
@@ -207,22 +216,23 @@ function make_palette() {
             return y * di + gutter * (y + 1) + r;
         });
         d3.select("svg").style("height", function() {
-           return  Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter;
+            return Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter;
         });
-
-    }
-
-    circles.on('click', function(d) {
+            circles.on('click', function(d) {
         color = d.color;
         circles.transition().attr("r", r).style("stroke", function(d) {
             return ((d.color == "#f2f2f2") ? "white" : "none")
         });
 
-        d3.select(this).transition().attr("r", parseFloat(r) * 1.3 + "%")
+        d3.select(this).transition().attr("r", r * 1.3 )
             .transition().attr("r", r)
             .style("stroke", "#0d0d0d")
             .style("stroke-width", 4);
     });
+
+    }
+
+
 
     $("#save").on("click", save_img);
     $("#share").on("click", share_page);
@@ -302,6 +312,11 @@ function resize(previous) {
     ctx.canvas.width = side;
     make_carve(currentCanvas, imgdb[currentCanvas].src);
     ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
+
+
+    d3.select("svg").remove();
+    make_palette();
+
 
 }
 window.onresize = resize;

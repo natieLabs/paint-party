@@ -16,10 +16,10 @@ var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", 
 
 var imgdb = [{
     "index": 0,
-    "src": "img0.png"
+    "src": "img0.svg"
 }, {
     "index": 1,
-    "src": "img1.png"
+    "src": "img1.svg"
 }, {
     "index": 2,
     "src": "img2.png"
@@ -35,6 +35,51 @@ var imgdb = [{
 }, {
     "index": 6,
     "src": "img6.png"
+}, {
+    "index": 7,
+    "src": "dumbbells-01.svg"
+}, {
+    "index": 8,
+    "src": "music-01.svg"
+}, {
+    "index": 9,
+    "src": "hand-01.svg"
+}, {
+    "index": 10,
+    "src": "guitar-01.svg"
+}, {
+    "index": 11,
+    "src": "black-01.svg"
+}, {
+    "index": 12,
+    "src": "mic-01.svg"
+}, {
+    "index": 13,
+    "src": "headphones.svg"
+}, {
+  "index" :14,
+  "src" : "multimedia.svg"
+}, {
+  "index" :15,
+  "src" : "video-01.svg"
+},{
+  "index" : 16,
+  "src" : "backpack-01.svg"
+}, {
+  "index":17,
+  "src" : "car.svg"
+}, {
+   "index":18,
+  "src" : "boat.svg"
+} , {
+  "index": 19,
+  "src" :"zombie.svg"
+}, {
+  "index" : 20,
+  "src" :"converse.svg"
+}, {
+  "index" : 21,
+  "src" : "elephant.svg"
 }]
 
 function init() {
@@ -88,7 +133,7 @@ function handleCanvasSwitch(event) {
     // $('#img' + currentCanvas).attr("src", canvas.toDataURL());
 
     // update current canvas to point to chosen canvas
-    currentCanvas = $(this).attr('id').slice(-1);
+    currentCanvas = $(this).attr('id').substring(3);
     // carveImageSrc = $(this).attr('id') + ".png";
     carveImageSrc = imgdb[currentCanvas].src;
 
@@ -215,7 +260,7 @@ function make_palette() {
             return y * di + gutter * (y + 1) + r;
         });
         d3.select("svg").style("height", function() {
-            return (Math.floor(jsonColors.length / numPerRow)+1) * (di + gutter) + gutter;
+            return (Math.floor(jsonColors.length / numPerRow) + 1) * (di + gutter) + gutter;
         });
         circles.on('click', function(d) {
             color = d.color;

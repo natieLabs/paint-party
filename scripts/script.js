@@ -1,6 +1,6 @@
 var canvas, stage, carve;
 var ctx, ctxcarve;
-var side;
+var side, w, h;
 var drawingCanvas;
 var oldPt;
 var oldMidPt;
@@ -44,11 +44,9 @@ function init() {
     carve = document.getElementById('carveout');
     ctxcarve = carve.getContext("2d");
 
-    var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight * 0.7 || e.clientHeight * 0.7 || g.clientHeight * 0.7;
+    w = window.innerWidth || e.clientWidth || g.clientWidth;
+    h = window.innerHeight * 0.7 || e.clientHeight * 0.7 || g.clientHeight * 0.7;
     side = Math.min(w, h);
-
-    // $("#myCanvas")[0].attr("width", width).attr("height", height);
 
     ctx.canvas.height = side;
     ctx.canvas.width = side;
@@ -157,25 +155,16 @@ function make_palette() {
         .enter()
         .append("circle");
 
+
+
     var circleAttributes = circles
-        .attr("cx", function(d) {
-            if (d.i < colors.length / 2) {
-                return (d.i * 12 + 16) + "%";
-            } else {
-                return ((d.i - colors.length / 2) * 12 + 22) + "%";
-            }
-        })
-        .attr("cy", function(d) {
-            var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
-            return cy
-        })
         .style("fill", function(d) {
             return d.color;
         })
         .filter(function(d) {
             return d.i == 0
         })
-        .style("stroke", "#0d0d0d").style("stroke-width", 4)
+        .style("stroke", "#0d0d0d").style("stroke-width", 4);
 
     // stroke the circle that represents the eraser so it's visible against background
     circles.filter(function(d) {
@@ -183,14 +172,54 @@ function make_palette() {
         })
         .style("stroke", "white").style("stroke-width", 4)
 
+    // var r = Math.max(0.06 * $("#palette").height(), 15);
+
+    var r;
+
+    if (w > 1000) {
+        console.log("here")
+        r = "6%";
+        circles.attr("cx", function(d) {
+            if (d.i < colors.length / 2) {
+                return (d.i * 12 + 16) + "%";
+            } else {
+                return ((d.i - colors.length / 2) * 12 + 22) + "%";
+            }
+        }).attr("cy", function(d) {
+            var cy = (~~(d.i / (colors.length / 2)) * 33 + 33) + "%";
+            return cy
+        });
+    } else {
+        // mobile mode
+        var r = 18;
+        var di = r * 2;
+        var gutter = 8;
+        var numPerRow = ~~($("#palette").width() / (di + gutter)) - 1;
+        console.log(numPerRow);
+
+
+        circles.attr("cx", function(d) {
+            var x = d.i % numPerRow;
+            var y = ~~(d.i / numPerRow);
+            return x * di + gutter * (x + 1) + r + y % 2 * r;
+        }).attr("cy", function(d) {
+            var y = ~~(d.i / numPerRow);
+            return y * di + gutter * (y + 1) + r;
+        });
+        d3.select("svg").style("height", function() {
+           return  Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter;
+        });
+
+    }
+
     circles.on('click', function(d) {
         color = d.color;
-        circles.transition().attr("r", "6%").style("stroke", function(d) {
+        circles.transition().attr("r", r).style("stroke", function(d) {
             return ((d.color == "#f2f2f2") ? "white" : "none")
         });
 
-        d3.select(this).transition().attr("r", "8%")
-            .transition().attr("r", "6%")
+        d3.select(this).transition().attr("r", parseFloat(r) * 1.3 + "%")
+            .transition().attr("r", r)
             .style("stroke", "#0d0d0d")
             .style("stroke-width", 4);
     });
@@ -198,9 +227,9 @@ function make_palette() {
     $("#save").on("click", save_img);
     $("#share").on("click", share_page);
 
-    d3.selectAll("circle").attr("r", function(d) {
-        return "6%"
-    });
+
+
+    d3.selectAll("circle").attr("r", r);
 }
 
 // create carved canvas to cover artwork
@@ -259,8 +288,8 @@ function cloneCanvas(oldCanvas) {
 
 function resize(previous) {
 
-    var w = window.innerWidth || e.clientWidth || g.clientWidth;
-    var h = window.innerHeight * 0.7 || e.clientHeight * 0.7 || g.clientHeight * 0.7;
+    w = window.innerWidth || e.clientWidth || g.clientWidth;
+    h = window.innerHeight * 0.7 || e.clientHeight * 0.7 || g.clientHeight * 0.7;
     side = Math.min(w, h);
 
     scale = side / previous;

@@ -218,17 +218,17 @@ function make_palette() {
         d3.select("svg").style("height", function() {
             return Math.ceil(jsonColors.length / numPerRow) * (di + gutter) + gutter;
         });
-            circles.on('click', function(d) {
-        color = d.color;
-        circles.transition().attr("r", r).style("stroke", function(d) {
-            return ((d.color == "#f2f2f2") ? "white" : "none")
-        });
+        circles.on('click', function(d) {
+            color = d.color;
+            circles.transition().attr("r", r).style("stroke", function(d) {
+                return ((d.color == "#f2f2f2") ? "white" : "none")
+            });
 
-        d3.select(this).transition().attr("r", r * 1.3 )
-            .transition().attr("r", r)
-            .style("stroke", "#0d0d0d")
-            .style("stroke-width", 4);
-    });
+            d3.select(this).transition().attr("r", r * 1.3)
+                .transition().attr("r", r)
+                .style("stroke", "#0d0d0d")
+                .style("stroke-width", 4);
+        });
 
     }
 
@@ -313,10 +313,7 @@ function resize(previous) {
     make_carve(currentCanvas, imgdb[currentCanvas].src);
     ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
 
-
     d3.select("svg").remove();
     make_palette();
-
-
 }
 window.onresize = resize;

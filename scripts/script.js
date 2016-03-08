@@ -63,6 +63,16 @@ function init() {
     $("#share").on("click", share_page);
     $("#clear").on("click", handleCanvasClear);
 
+    $("button").tipsy({
+      gravity: 's',
+      html: true,
+      title: function() {
+        return this.id;
+      },
+      fade: true,
+
+    })
+
 }
 
 function handleCanvasSwitch(event) {

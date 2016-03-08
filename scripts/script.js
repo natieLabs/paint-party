@@ -47,7 +47,7 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve(currentCanvas, imgdb[currentCanvas], " ");
+    make_carve(currentCanvas);
     for (var i = 0; i < colors.length; i++) {
         jsonColors.push({
             "i": i,
@@ -57,7 +57,12 @@ function init() {
     make_palette();
     make_bgPicker();
 
+    // set up listeners
     $('img').on('click', handleCanvasSwitch);
+    $("#save").on("click", save_img);
+    $("#share").on("click", share_page);
+    $("#clear").on("click", handleCanvasClear);
+
 }
 
 function handleCanvasSwitch(event) {
@@ -68,20 +73,25 @@ function handleCanvasSwitch(event) {
 
     // update current canvas to point to chosen canvas
     currentCanvas = $(this).attr('id').substring(3);
-    // carveImageSrc = $(this).attr('id') + ".png";
-    carveImageSrc = imgdb[currentCanvas];
 
     var dataURL = $(this).attr('src');
 
     if (CANVAS_CACHE[currentCanvas] == null) {
         clearBoard();
-        make_carve(currentCanvas, carveImageSrc);
+        make_carve(currentCanvas);
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctxcarve.clearRect(0, 0, carve.width, carve.height);
-        make_carve(currentCanvas, carveImageSrc);
+        make_carve(currentCanvas);
         ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
+}
+
+function handleCanvasClear() {
+    clearBoard();
+    make_carve(currentCanvas);
+    CANVAS_CACHE[currentCanvas] = null;
+    $('#img' + currentCanvas).attr("src", imgdb[currentCanvas]);
 }
 
 function handleMouseDown(event) {
@@ -210,20 +220,14 @@ function make_palette() {
 
     }
 
-
-
-    $("#save").on("click", save_img);
-    $("#share").on("click", share_page);
-
-
-
     d3.selectAll("circle").attr("r", r);
 }
 
 // create carved canvas to cover artwork
 // src can be url of image or dataURL of canvas
-function make_carve(i, carveImageSrc) {
-    base_image = new Image();
+function make_carve(i) {
+    var carveImageSrc = imgdb[currentCanvas]
+    var base_image = new Image();
     carve.width = carve.height = side;
 
     base_image.onload = function() {
@@ -289,7 +293,7 @@ function resize(previous) {
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
     ctx.canvas.height = side;
     ctx.canvas.width = side;
-    make_carve(currentCanvas, imgdb[currentCanvas]);
+    make_carve(currentCanvas);
     ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
 
     d3.select("svg").remove();

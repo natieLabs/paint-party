@@ -66,8 +66,7 @@ body {
     pointer-events: none;
 }
 
-#palette,
-#controls {
+#palette{
     width: 20vw;
 
 }
@@ -88,6 +87,14 @@ body {
     max-height: 8vh;
     border: 5px solid white;
     margin: 5px;
+}
+
+#controlsWrapper {
+  top: 3vh;
+}
+
+.controls{
+  float:left;
 }
 
 .header {
@@ -145,9 +152,9 @@ body {
     <div class="footer">
         <div class="ui grid">
             <div class="sixteen column row">
-                <div class="four wide column" id="paletteWrapper"></div>
-                <div class="eight wide column" id="bgPicker"></div>
-                <div id="controlsWrapper" class="four wide column">
+                <div class="three wide column" id="paletteWrapper"></div>
+                <div class="ten wide column" id="bgPicker"></div>
+                <div id="controlsWrapper" class="three wide column">
                     <div class="controls">
                         <button class="circular ui icon button" id="save">
                             <i class="inverted icon arrow down"></i>
@@ -157,6 +164,7 @@ body {
                         </button>
                     </div>
                 </div>
+                <!-- <div class="two wide column"></div> -->
             </div>
         </div>
     </div>

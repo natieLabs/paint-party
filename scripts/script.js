@@ -14,7 +14,7 @@ const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
-var imgdb = ["img0.svg", "img1.svg", "img2.png", "img3.png", "img4.png", "img5.png", "img6.png", "dumbbells.svg", "music.svg", "hand.svg", "guitar.svg", "black.svg", "mic.svg", "headphones.svg", "multimedia.svg", "video.svg", "backpack.svg", "car.svg", "boat.svg", "zombie.svg", "converse.svg", "elephant.svg"];
+var imgdb = ["img0.svg", "img1.svg", "img2.png", "img3.png", "img4.png", "img5.png", "img6.png", "music.svg", "hand.svg", "guitar.svg", "black.svg", "mic.svg", "headphones.svg", "multimedia.svg", "video.svg", "backpack.svg", "car.svg", "boat.svg", "zombie.svg", "converse.svg", "elephant.svg"];
 
 function init() {
     canvas = document.getElementById("myCanvas");

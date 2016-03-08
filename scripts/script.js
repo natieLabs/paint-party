@@ -246,7 +246,6 @@ function make_bgPicker() {
     var src;
     for (var i = 0; i < imgdb.length; i++) {
         src = imgdb[i];
-        console.log(src)
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
         CANVAS_CACHE.push(null);
     }

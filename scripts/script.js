@@ -14,7 +14,7 @@ const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
-var imgdb = ["assets/img0.svg", "assets/img1.svg", "assets/img2.png", "assets/img3.png", "assets/img4.png", "assets/img5.png", "assets/img6.png", "assets/music.svg", "assets/hand.svg", "assets/guitar.svg", "assets/black.svg", "assets/mic.svg", "assets/headphones.svg", "assets/multimedia.svg", "assets/video.svg", "assets/backpack.svg", "assets/car.svg", "assets/boat.svg", "assets/zombie.svg", "assets/converse.svg", "assets/elephant.svg", "assets/camel.svg"];
+var imgdb = ["assets/img0.svg", "assets/img1.svg", "assets/img2.svg", "assets/img3.svg", "assets/cat.svg", "assets/img5.svg", "assets/fish.svg", "assets/music.svg", "assets/hand.svg", "assets/guitar.svg", "assets/black.svg", "assets/mic.svg", "assets/headphones.svg", "assets/multimedia.svg", "assets/video.svg", "assets/backpack.svg", "assets/car.svg", "assets/boat.svg", "assets/zombie.svg", "assets/converse.svg", "assets/elephant.svg", "assets/camel.svg"];
 
 function init() {
     canvas = document.getElementById("myCanvas");

@@ -12,6 +12,7 @@ var savecircle;
 var currentCanvas = 1;
 const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
+var COOKIE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
 var imgdb = ["assets/img0.svg", "assets/img1.svg", "assets/img2.svg", "assets/img3.svg", "assets/cat.svg", "assets/img5.svg", "assets/fish.svg", "assets/music.svg", "assets/hand.svg", "assets/guitar.svg", "assets/black.svg", "assets/mic.svg", "assets/headphones.svg", "assets/multimedia.svg", "assets/video.svg", "assets/backpack.svg", "assets/car.svg", "assets/boat.svg", "assets/zombie.svg", "assets/converse.svg", "assets/elephant.svg", "assets/camel.svg"];
@@ -47,13 +48,13 @@ function init() {
     stage.addChild(drawingCanvas);
     stage.update();
 
-    make_carve(currentCanvas);
     for (var i = 0; i < colors.length; i++) {
         jsonColors.push({
             "i": i,
             "color": colors[i]
         })
     }
+    
     make_palette();
     make_bgPicker();
 
@@ -63,16 +64,17 @@ function init() {
     $("#share").on("click", share_page);
     $("#clear").on("click", handleCanvasClear);
 
+
+    $("#img1").click();
     $("button").tipsy({
-      gravity: 's',
-      html: true,
-      title: function() {
-        return this.id;
-      },
-      fade: true,
+        gravity: 's',
+        html: true,
+        title: function() {
+            return this.id;
+        },
+        fade: true,
 
     })
-
 }
 
 function handleCanvasSwitch(event) {
@@ -142,8 +144,13 @@ function handleMouseUp(event) {
         return;
     }
     ctx.drawImage(carve, 0, 0);
-    $('#img' + currentCanvas).attr("src", canvas.toDataURL());
+    var dataURL = canvas.toDataURL()
+    $('#img' + currentCanvas).attr("src", dataURL);
     stage.removeEventListener("stagemousemove", handleMouseMove);
+    // Cookies.set(currentCanvas, dataURL);
+    // console.log(dataURL);
+    // console.log(Cookies.get(currentCanvas));
+    localStorage.setItem(currentCanvas, dataURL);
 }
 
 function make_palette() {
@@ -255,9 +262,16 @@ function clearBoard() {
 function make_bgPicker() {
     var src;
     for (var i = 0; i < imgdb.length; i++) {
-        src = imgdb[i];
+        var dataURL = localStorage.getItem(i);
+        if (dataURL == null) {
+            src = imgdb[i];
+            CANVAS_CACHE.push(null);
+        } else {
+            src = dataURL;
+            CANVAS_CACHE[i] = canvasFromDataURL(dataURL);
+        }
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
-        CANVAS_CACHE.push(null);
+
     }
 }
 
@@ -275,7 +289,6 @@ function share_page() {
 }
 
 function cloneCanvas(oldCanvas) {
-
     var newCanvas = document.createElement('canvas');
     var context = newCanvas.getContext('2d');
 
@@ -286,6 +299,23 @@ function cloneCanvas(oldCanvas) {
     context.drawImage(oldCanvas, 0, 0);
 
     return newCanvas;
+}
+
+function canvasFromDataURL(dataURL) {
+    var newCanvas = document.createElement('canvas');
+    var context = newCanvas.getContext('2d');
+    newCanvas.width = side;
+    newCanvas.height = side;
+
+    var base_image = new Image();
+
+    base_image.onload = function() {
+        context.drawImage(base_image, 0, 0, side, side);
+        context.fill();
+    }
+    base_image.src = dataURL;
+    return newCanvas;
+
 }
 
 function resize(previous) {

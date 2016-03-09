@@ -54,7 +54,7 @@ function init() {
             "color": colors[i]
         })
     }
-    
+
     make_palette();
     make_bgPicker();
 
@@ -65,7 +65,7 @@ function init() {
     $("#clear").on("click", handleCanvasClear);
 
 
-    $("#img1").click();
+    // $("#img1").click();
     $("button").tipsy({
         gravity: 's',
         html: true,
@@ -73,8 +73,11 @@ function init() {
             return this.id;
         },
         fade: true,
-
     })
+
+
+
+    make_carve(currentCanvas);
 }
 
 function handleCanvasSwitch(event) {
@@ -103,6 +106,7 @@ function handleCanvasClear() {
     clearBoard();
     make_carve(currentCanvas);
     CANVAS_CACHE[currentCanvas] = null;
+    localStorage.removeItem(currentCanvas);
     $('#img' + currentCanvas).attr("src", imgdb[currentCanvas]);
 }
 
@@ -272,6 +276,11 @@ function make_bgPicker() {
         }
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
 
+    }
+    if (CANVAS_CACHE[currentCanvas] != null) {
+        // console.log(CANVAS_CACHE[currentCanvas]);
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
 }
 

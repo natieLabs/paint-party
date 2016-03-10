@@ -24,9 +24,6 @@ if (iOS) {
     imgdb = ["assets/svg/img0.svg", "assets/svg/img1.svg", "assets/svg/img2.svg", "assets/svg/img3.svg", "assets/svg/cat.svg", "assets/svg/img5.svg", "assets/svg/fish.svg", "assets/svg/music.svg", "assets/svg/hand.svg", "assets/svg/guitar.svg", "assets/svg/black.svg", "assets/svg/mic.svg", "assets/svg/headphones.svg", "assets/svg/multimedia.svg", "assets/svg/video.svg", "assets/svg/backpack.svg", "assets/svg/car.svg", "assets/svg/boat.svg", "assets/svg/zombie.svg", "assets/svg/converse.svg", "assets/svg/elephant.svg", "assets/svg/camel.svg", "assets/png/beaver.png"];
 }
 
-
-
-
 function init() {
     canvas = document.getElementById("myCanvas");
     ctx = canvas.getContext('2d');
@@ -65,16 +62,14 @@ function init() {
         })
     }
 
-
     make_palette();
-    async.series([make_bgPicker, paintInitCanvas, make_carve(currentCanvas)]);
-
+    async.series([make_bgPicker, paintInitCanvas]);
+    make_carve(currentCanvas);
     // set up listeners
     $('img').on('click', handleCanvasSwitch);
     $("#save").on("click", save_img);
     $("#share").on("click", share_page);
     $("#clear").on("click", handleCanvasClear);
-
 
     // $("#img1").click();
     $("button").tipsy({
@@ -86,7 +81,6 @@ function init() {
         fade: true,
     })
 
-    
 }
 
 function handleCanvasSwitch(event) {
@@ -101,11 +95,9 @@ function handleCanvasSwitch(event) {
     var dataURL = $(this).attr('src');
 
     if (CANVAS_CACHE[currentCanvas] == null) {
-        clearBoard()
-        make_carve(currentCanvas);
+        clearBoard().then(make_carve(currentCanvas));
     } else {
-        clearBoard();
-        make_carve(currentCanvas);
+        clearBoard().then(make_carve(currentCanvas));
         ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0);
     }
 }
@@ -264,8 +256,10 @@ function make_carve(i) {
 }
 
 function clearBoard() {
+    var deferred = $.Deferred();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
+    return deferred.promise();
 }
 
 function paintInitCanvas(callback) {

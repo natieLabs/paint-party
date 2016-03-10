@@ -28,6 +28,7 @@ if (iOS) {
 
 
 function init() {
+  localStorage.clear();
     canvas = document.getElementById("myCanvas");
     ctx = canvas.getContext('2d');
 
@@ -67,7 +68,7 @@ function init() {
 
 
     make_palette();
-    async.series([make_bgPicker, paintInitCanvas]);
+    async.series([make_bgPicker, paintInitCanvas, make_carve(currentCanvas)]);
 
     // set up listeners
     $('img').on('click', handleCanvasSwitch);
@@ -86,7 +87,7 @@ function init() {
         fade: true,
     })
 
-    make_carve(currentCanvas);
+    
 }
 
 function handleCanvasSwitch(event) {
@@ -101,13 +102,12 @@ function handleCanvasSwitch(event) {
     var dataURL = $(this).attr('src');
 
     if (CANVAS_CACHE[currentCanvas] == null) {
-        clearBoard();
+        clearBoard()
         make_carve(currentCanvas);
     } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctxcarve.clearRect(0, 0, carve.width, carve.height);
+        clearBoard();
         make_carve(currentCanvas);
-        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
+        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0);
     }
 }
 
@@ -160,9 +160,6 @@ function handleMouseUp(event) {
     var dataURL = canvas.toDataURL()
     $('#img' + currentCanvas).attr("src", dataURL);
     stage.removeEventListener("stagemousemove", handleMouseMove);
-    // Cookies.set(currentCanvas, dataURL);
-    // console.log(dataURL);
-    // console.log(Cookies.get(currentCanvas));
     localStorage.setItem(currentCanvas, dataURL);
 }
 
@@ -272,16 +269,11 @@ function clearBoard() {
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
 }
 
-function paintInitCanvas() {
+function paintInitCanvas(callback) {
     if (CANVAS_CACHE[currentCanvas] != null) {
-        // console.log(CANVAS_CACHE[currentCanvas]);
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-        console.log(currentCanvas)
-            //     CANVAS_CACHE[currentCanvas].toBlob(function(blob) {
-            //     saveAs(blob, "natie painted.png");
-            // });
         ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
+    callback(null);
 }
 
 function make_bgPicker(callback) {

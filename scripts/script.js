@@ -67,7 +67,7 @@ function init() {
 
 
     make_palette();
-    make_bgPicker();
+    async.series([make_bgPicker, paintInitCanvas]);
 
     // set up listeners
     $('img').on('click', handleCanvasSwitch);
@@ -85,8 +85,6 @@ function init() {
         },
         fade: true,
     })
-
-
 
     make_carve(currentCanvas);
 }
@@ -274,7 +272,19 @@ function clearBoard() {
     ctxcarve.clearRect(0, 0, carve.width, carve.height);
 }
 
-function make_bgPicker() {
+function paintInitCanvas() {
+    if (CANVAS_CACHE[currentCanvas] != null) {
+        // console.log(CANVAS_CACHE[currentCanvas]);
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        console.log(currentCanvas)
+            //     CANVAS_CACHE[currentCanvas].toBlob(function(blob) {
+            //     saveAs(blob, "natie painted.png");
+            // });
+        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
+    }
+}
+
+function make_bgPicker(callback) {
     var src;
     for (var i = 0; i < imgdb.length; i++) {
         var dataURL = localStorage.getItem(i);
@@ -286,14 +296,12 @@ function make_bgPicker() {
             CANVAS_CACHE[i] = canvasFromDataURL(dataURL);
         }
         $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
+    }
 
-    }
-    if (CANVAS_CACHE[currentCanvas] != null) {
-        // console.log(CANVAS_CACHE[currentCanvas]);
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
-    }
+    callback(null);
 }
+
+
 
 function save_img() {
     ctx.drawImage(carve, 0, 0);

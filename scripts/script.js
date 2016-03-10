@@ -15,7 +15,17 @@ var CANVAS_CACHE = [];
 var COOKIE = [];
 var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
 
-var imgdb = ["assets/img0.svg", "assets/img1.svg", "assets/img2.svg", "assets/img3.svg", "assets/cat.svg", "assets/img5.svg", "assets/fish.svg", "assets/music.svg", "assets/hand.svg", "assets/guitar.svg", "assets/black.svg", "assets/mic.svg", "assets/headphones.svg", "assets/multimedia.svg", "assets/video.svg", "assets/backpack.svg", "assets/car.svg", "assets/boat.svg", "assets/zombie.svg", "assets/converse.svg", "assets/elephant.svg", "assets/camel.svg"];
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+var imgdb = [];
+
+if (iOS) {
+    imgdb = ["assets/png/img0.png", "assets/png/img1.png", "assets/png/img2.png", "assets/png/img3.png", "assets/png/cat.png", "assets/png/img5.png", "assets/png/fish.png", "assets/png/music.png", "assets/png/hand.png", "assets/png/guitar.png", "assets/png/black.png", "assets/png/mic.png", "assets/png/headphones.png", "assets/png/multimedia.png", "assets/png/video.png", "assets/png/backpack.png", "assets/png/car.png", "assets/png/boat.png", "assets/png/zombie.png", "assets/png/converse.png", "assets/png/elephant.png", "assets/png/camel.png", "assets/png/beaver.png"];
+} else {
+    imgdb = ["assets/svg/img0.svg", "assets/svg/img1.svg", "assets/svg/img2.svg", "assets/svg/img3.svg", "assets/svg/cat.svg", "assets/svg/img5.svg", "assets/svg/fish.svg", "assets/svg/music.svg", "assets/svg/hand.svg", "assets/svg/guitar.svg", "assets/svg/black.svg", "assets/svg/mic.svg", "assets/svg/headphones.svg", "assets/svg/multimedia.svg", "assets/svg/video.svg", "assets/svg/backpack.svg", "assets/svg/car.svg", "assets/svg/boat.svg", "assets/svg/zombie.svg", "assets/svg/converse.svg", "assets/svg/elephant.svg", "assets/svg/camel.svg", "assets/png/beaver.png"];
+}
+
+
+
 
 function init() {
     canvas = document.getElementById("myCanvas");
@@ -54,6 +64,7 @@ function init() {
             "color": colors[i]
         })
     }
+
 
     make_palette();
     make_bgPicker();

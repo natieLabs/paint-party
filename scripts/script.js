@@ -28,7 +28,6 @@ if (iOS) {
 
 
 function init() {
-  localStorage.clear();
     canvas = document.getElementById("myCanvas");
     ctx = canvas.getContext('2d');
 

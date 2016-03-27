@@ -12,7 +12,7 @@ var savecircle;
 var currentCanvas = 1;
 const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
-var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#009245", "#FBB03B", "#FFFFFF", "#f2f2f2", "#CCCCCC", "#000000"];
+var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#8560a8", "#8c6239", "#FFFFFF", "#CCCCCC", "#000000" , "#f2f2f2"];
 
 var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 var imgdb = [];

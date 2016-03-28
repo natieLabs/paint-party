@@ -1,4 +1,4 @@
-# paintnatie
+# paint party
 
 a canvas painter that lets users paint many fun preset canvases.  
 the project uses localstorage to remember painting progress.

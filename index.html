@@ -7,10 +7,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta property="og:image:url" content="http://anniejiao.me/paintnatie/img1.png" />
-    <meta property="og:title" content="natie paint" />
-    <meta property="og:description" content="natie painted" />
-    <meta property="og:caption" content="some amazing caption" />
+    <!-- <meta property="og:image:url" content="http://anniejiao.me/paintnatie/img1.png" /> -->
+    <meta property="og:title" content="A Natie Labs Creative Experiment :: Paint Party" />
+    <meta property="og:description" content="Check out my masterpiece & try for yourself. Love, Natie." />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>paint natie</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -21,8 +20,6 @@
     <script src="scripts/canvas-toBlob.js"></script>
     <script src="scripts/FileSaver.min.js"></script>
     <meta charset="utf-8">
-    <script type='text/javascript' src='/scripts/jquery.tipsy.js'></script>
-    <link rel="stylesheet" href="/scripts/tipsy.css" type="text/css" />
     <script src="scripts/easeljs-NEXT.combined.js"></script>
     <script src="scripts/script.js"></script>
 </head>
@@ -62,16 +59,6 @@ body {
     left: 50%;
 }
 
-.content {
-    vertical-align: middle;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-}
-
 #carveout {
     pointer-events: none;
 }
@@ -86,7 +73,7 @@ body {
 }
 
 #bgPicker {
-    top: 2vh;
+    /*top: 2vh;*/
     z-index: 10;
     overflow: scroll;
     height: 18vh;
@@ -118,6 +105,11 @@ body {
     height: 20vh;
 }
 
+.footer {
+    bottom: 0;
+    text-align: center;
+}
+
 .logo {
     width: 6vw;
     min-width: 75px;
@@ -133,9 +125,8 @@ body {
     font-size: 1.5vmin;
 }
 
-.footer {
-    bottom: 0;
-    text-align: center;
+.ui.popup{
+  z-index: 50;
 }
 </style>
 <html lang="en">
@@ -164,18 +155,17 @@ body {
                 <div class="ten wide column" id="bgPicker"></div>
                 <div id="controlsWrapper" class="three wide column">
                     <div class="controls">
-                        <button class="circular ui icon button" id="clear">
+                        <button class="circular ui icon button" id="clear" data-content="clear">
                             <i class="inverted icon remove"></i>
                         </button>
-                        <button class="circular ui icon button" id="save">
+                        <button class="circular ui icon button" id="save" data-content="save">
                             <i class="inverted icon arrow down"></i>
                         </button>
-                        <button class="circular ui icon button" id="share">
+                        <button class="circular ui icon button" id="share" data-content="share">
                             <i class="inverted icon facebook"></i>
                         </button>
                     </div>
                 </div>
-                <!-- <div class="two wide column"></div> -->
             </div>
         </div>
     </div>

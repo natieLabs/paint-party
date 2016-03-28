@@ -97,7 +97,8 @@ function handleCanvasSwitch(event) {
         clearBoard().then(make_carve(currentCanvas));
     } else {
         clearBoard().then(make_carve(currentCanvas));
-        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0);
+        // keep four arguments so new drawing scales in case of window resizing
+        ctx.drawImage(CANVAS_CACHE[currentCanvas], 0, 0, side, side);
     }
 }
 
@@ -296,7 +297,7 @@ function save_img() {
 }
 
 function share_page() {
-    var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=http://anniejiao.me/paintnatie/", "pop", "width=600, height=400, scrollbars=no");
+    var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=" + window.location.href, "pop", "width=600, height=400, scrollbars=no");
     return false;
 }
 

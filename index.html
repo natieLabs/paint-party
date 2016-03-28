@@ -20,10 +20,15 @@
     <script src="scripts/canvas-toBlob.js"></script>
     <script src="scripts/FileSaver.min.js"></script>
     <meta charset="utf-8">
-    <script type='text/javascript' src='/scripts/jquery.tipsy.js'></script>
-    <link rel="stylesheet" href="/scripts/tipsy.css" type="text/css" />
     <script src="scripts/easeljs-NEXT.combined.js"></script>
     <script src="scripts/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/popup.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/transition.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/grid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/button.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/popup.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/transition.min.css">
 </head>
 <style>
 body {
@@ -61,16 +66,6 @@ body {
     left: 50%;
 }
 
-.content {
-    vertical-align: middle;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-}
-
 #carveout {
     pointer-events: none;
 }
@@ -85,7 +80,7 @@ body {
 }
 
 #bgPicker {
-    top: 2vh;
+    /*top: 2vh;*/
     z-index: 10;
     overflow: scroll;
     height: 18vh;
@@ -136,6 +131,10 @@ body {
     color: black;
     font-size: 1.5vmin;
 }
+
+.ui.popup{
+  z-index: 50;
+}
 </style>
 <html lang="en">
 
@@ -163,18 +162,17 @@ body {
                 <div class="ten wide column" id="bgPicker"></div>
                 <div id="controlsWrapper" class="three wide column">
                     <div class="controls">
-                        <button class="circular ui icon button" id="clear">
+                        <button class="circular ui icon button" id="clear" data-content="clear">
                             <i class="inverted icon remove"></i>
                         </button>
-                        <button class="circular ui icon button" id="save">
+                        <button class="circular ui icon button" id="save" data-content="save">
                             <i class="inverted icon arrow down"></i>
                         </button>
-                        <button class="circular ui icon button" id="share">
+                        <button class="circular ui icon button" id="share" data-content="share">
                             <i class="inverted icon facebook"></i>
                         </button>
                     </div>
                 </div>
-                <!-- <div class="two wide column"></div> -->
             </div>
         </div>
     </div>

@@ -12,15 +12,16 @@ var savecircle;
 var currentCanvas = 1;
 const NUM_CARVES = 7;
 var CANVAS_CACHE = [];
-var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#8560a8", "#8c6239", "#FFFFFF", "#CCCCCC", "#000000" , "#f2f2f2"];
+var colors = ["#FF1D25", "#7AC943", "#0071BC", "#FF931E", "#FFE200", "#29ABE2", "#8560a8", "#8c6239", "#FFFFFF", "#CCCCCC", "#000000", "#f2f2f2"];
+var hover_tags = ["blank", "ahem", "muah!", "boo!", "leave me alone", "quack", "(burp)", "vroom", "rock on", "legend", "bore everyone", "headbop", "tune in", "shoot", "let's go!", "DJ", "I'm the captain now!", "clients", "rubber", "hug me", "hump me", "come on over"];
 
 var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 var imgdb = [];
 
 if (iOS) {
-    imgdb = ["assets/png/img0.png", "assets/png/img1.png", "assets/png/img2.png", "assets/png/img3.png", "assets/png/cat.png", "assets/png/img5.png", "assets/png/fish.png", "assets/png/car.png", "assets/png/hand.png", "assets/png/guitar.png", "assets/png/black.png",  "assets/png/headphones.png", "assets/png/multimedia.png", "assets/png/video.png", "assets/png/backpack.png", "assets/png/music.png", "assets/png/boat.png", "assets/png/zombie.png", "assets/png/converse.png", "assets/png/elephant.png", "assets/png/camel.png", "assets/png/beaver.png"];
+    imgdb = ["assets/png/img0.png", "assets/png/img1.png", "assets/png/img2.png", "assets/png/img3.png", "assets/png/cat.png", "assets/png/img5.png", "assets/png/fish.png", "assets/png/car.png", "assets/png/hand.png", "assets/png/guitar.png", "assets/png/black.png", "assets/png/headphones.png", "assets/png/multimedia.png", "assets/png/video.png", "assets/png/backpack.png", "assets/png/music.png", "assets/png/boat.png", "assets/png/zombie.png", "assets/png/converse.png", "assets/png/elephant.png", "assets/png/camel.png", "assets/png/beaver.png"];
 } else {
-    imgdb = ["assets/svg/img0.svg", "assets/svg/img1.svg", "assets/svg/img2.svg", "assets/svg/img3.svg", "assets/svg/cat.svg", "assets/svg/img5.svg", "assets/svg/fish.svg", "assets/svg/car.svg", "assets/svg/hand.svg", "assets/svg/guitar.svg", "assets/svg/black.svg",  "assets/svg/headphones.svg", "assets/svg/multimedia.svg", "assets/svg/video.svg", "assets/svg/backpack.svg", "assets/svg/music.svg", "assets/svg/boat.svg", "assets/svg/zombie.svg", "assets/svg/converse.svg", "assets/svg/elephant.svg", "assets/svg/camel.svg", "assets/png/beaver.png"];
+    imgdb = ["assets/svg/img0.svg", "assets/svg/img1.svg", "assets/svg/img2.svg", "assets/svg/img3.svg", "assets/svg/cat.svg", "assets/svg/img5.svg", "assets/svg/fish.svg", "assets/svg/car.svg", "assets/svg/hand.svg", "assets/svg/guitar.svg", "assets/svg/black.svg", "assets/svg/headphones.svg", "assets/svg/multimedia.svg", "assets/svg/video.svg", "assets/svg/backpack.svg", "assets/svg/music.svg", "assets/svg/boat.svg", "assets/svg/zombie.svg", "assets/svg/converse.svg", "assets/svg/elephant.svg", "assets/svg/camel.svg", "assets/png/beaver.png"];
 }
 
 function init() {
@@ -70,15 +71,21 @@ function init() {
     $("#share").on("click", share_page);
     $("#clear").on("click", handleCanvasClear);
 
-    // $("#img1").click();
-    $("button").tipsy({
-        gravity: 's',
-        html: true,
-        title: function() {
-            return this.id;
-        },
-        fade: true,
-    })
+    $('img').popup({
+        variation: "tiny inverted",
+        position: "bottom center",
+        prefer: "opposite",
+        inline: "true",
+        duration : 100
+    });
+
+    $('.circular.button').popup({
+        variation: "tiny inverted",
+        position: "top center",
+        prefer: "opposite",
+        inline: "true",
+        duration : 100
+    });
 
 }
 
@@ -280,7 +287,7 @@ function make_bgPicker(callback) {
             src = dataURL;
             CANVAS_CACHE[i] = canvasFromDataURL(dataURL);
         }
-        $("#bgPicker").append("<img id='img" + i + "' src='" + src + "'></img>");
+        $("#bgPicker").append("<img id='img" + i + "' src='" + src + "' data-content='" + hover_tags[i]+ "' ></img>");
     }
 
     callback(null);

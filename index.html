@@ -8,11 +8,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="paint party natie labs experiments branding, animation, storytelling, design, websites, interactive, copywriting, digital, mobile design, print, social media, collateral, direct">
+    <meta name="description" content="Check out my masterpiece and see what you come up with yourself. Courtesy of Natie branding agency." />
     <meta property="og:image:url" content="https://raw.githubusercontent.com/anniej42/paint-party/gh-pages/image.png" />
     <meta property="og:title" content="A Natie Labs Creative Experiment :: Paint Party" />
-    <meta property="og:description" content="Check out my masterpiece & try for yourself. Love, Natie." />
+    <meta property="og:description" content="Check out my masterpiece and see what you come up with yourself. Courtesy of Natie branding agency." />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>paint natie</title>
+    <title>Paint Party</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="scripts/async.min.js"></script>
     <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.min.css">
@@ -111,11 +112,17 @@ body {
     text-align: center;
 }
 
-.logo {
+/*.logo {
     width: 75px;
     margin: 2vh;
     position: absolute;
     z-index: 25;
+}*/
+
+h5 {
+    font-family: futura-pt, 'Futura Std', Futura, Arial, sans-serif;
+    font-style: italic;
+    z-index: 30;
 }
 
 .pageLink {
@@ -134,7 +141,7 @@ body {
 <html lang="en">
 
 <body onload="init();">
-    <div class="header">
+    <!--     <div class="header">
         <div class="ui grid">
             <div class="row">
                 <div class="left floated column">
@@ -147,7 +154,15 @@ body {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
+    <div class="ui large secondary menu">
+        <a class="ui image item"><img src="logo.png" class="logo"></img>
+        </a>
+        <div class="right menu">
+            <div class="ui item">
+                <h5>NATIE/LABS/PAINT</h5></div>
+            </div>
+        </div>
     <canvas id="myCanvas"></canvas>
     <canvas id="carveout"></canvas>
     <div class="footer">

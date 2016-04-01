@@ -95,11 +95,6 @@ body {
     float: left;
 }
 
-.header {
-    top: 0;
-}
-
-.header,
 .footer {
     width: 100%;
     z-index: 20;
@@ -111,13 +106,6 @@ body {
     bottom: 0;
     text-align: center;
 }
-
-/*.logo {
-    width: 75px;
-    margin: 2vh;
-    position: absolute;
-    z-index: 25;
-}*/
 
 h5 {
     font-family: futura-pt, 'Futura Std', Futura, Arial, sans-serif;
@@ -141,28 +129,14 @@ h5 {
 <html lang="en">
 
 <body onload="init();">
-    <!--     <div class="header">
-        <div class="ui grid">
-            <div class="row">
-                <div class="left floated column">
-                    <a href="http://natie.com">
-                        <img src="logo.png" class="logo"></img>
-                    </a>
-                </div>
-                <div class="right floated four wide column">
-                    <div class="pageLink"> NATIE/LABS/PAINT </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="ui large secondary menu">
-        <a class="ui image item"><img src="logo.png" class="logo"></img>
+        <a class="ui image item" href="http://natie.com"><img src="logo.png" class="logo"></img>
         </a>
         <div class="right menu">
             <div class="ui item">
                 <h5>NATIE/LABS/PAINT</h5></div>
-            </div>
         </div>
+    </div>
     <canvas id="myCanvas"></canvas>
     <canvas id="carveout"></canvas>
     <div class="footer">
